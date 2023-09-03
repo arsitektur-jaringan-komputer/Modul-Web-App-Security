@@ -1,0 +1,105 @@
+# Modul 1 Part 1 Web App Security
+
+- [Directory Traversal Vulnerabilities](#directory-traversal-vulnerabilities)
+- [File Inclusion Vulnerabilities](#file-inclusion-vulnerabilities)
+- [Session Hijacking](#session-hijacking)
+- [Cross-Site Scripting (XSS)](#cross-site-scripting-xss)
+
+## Directory Traversal Vulnerabilities
+
+### Deskripsi
+
+Directory Traversal merupakan kerentanan dimana aplikasi web memperbolehkan client untuk mengakses file yang tidak seharusnya diakses dan tidak sewajarnya diakses melalui interface web diluar root directory website. Sebagai contoh, client dapat mengakses informsi/dokumen pada server yang seharusnya tidak ditampilkan di website.
+
+### Contoh:
+
+Kode php dan html dibawah, berfungsi sebagai pengubah warna background dari website kita dengan memberikan kode php berdasarkan warna yang dipilih pada parameter COLOR di GET request.
+<br>
+<br>
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/82ed8a67-ee1b-4b92-958f-5291d4c0b395)
+
+<br>
+<br>
+
+Menurut anda, apa yang akan anda lakukan sebagai penyerang untuk dapat mengakses file lain yang ada pada server?
+
+### Cara Mengidentifikasi Kerentanan Directory Traversal
+
+- Identifikasi request parameter yang dapat dimanipulasi
+- Lakukan percobaan dengan memasukkan payload supaya website memuat informasi yang tidak seharusnya bisa diakses
+
+## File Inclusion Vulnerabilities
+
+### Deskripsi
+
+File Inclusion merupakan kerentanan dimana user dapat mengeksekusi konten pada suatu file di website. File ini seharusnya tidak dapat dieksekusi secara bebas oleh user, namun dikarenakan kurang baiknya implementasi keamanan pada website, user jadi bisa mengeksekusi file tersebut.
+
+### Jenis-Jenis Kerentanan File Inclusion
+
+- [Local File Inclusion](#local-file-inclusion)
+- [Remote File Inclusion](#remote-file-inclusion)
+<br>
+<br>
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/e5f2a184-4a05-4893-b4fa-44e1f565cc36)
+
+
+### Local File Inclusion
+
+Local File Inclusion adalah kelemahan dimana user dapat mengeksekusi kontek file yang terletak pada server yang sama dengan website. Biasanya pada kasus LFI, seorang penyerang berhasil memasukkan sebuah file atau kode berbahaya melalui server atau website, lalu dengan memanfaatkan kerentanan File Inclusion, penyerang dapat mengeksekusi file tersebut pada website. Dampak pada sisi user yang dijadikan target adalah, penyerang bisa saja mengarahkan user ke lokasi file berbahaya yang telah disiapkan untuk menyerang user pada server, dan ketika user mengakses lokasi tersebut, user secara tidak sadar telah mengeksekusi file berbahaya yang telah disiapkan. Pemanfaatan yang paling umum terjadi pada kerentanan LFI adalah penyerang dapat menyiapkan file yang ketika diakses oleh penyerang dan sever mengeksekusi file tersebut, penyerang akan mendapatkan akses terhadap server atau bisa disebut <a href="https://www.getastra.com/blog/911/php-backdoor-web-shell-removal/"><i>web shells</i></a>.
+
+
+#### Web Shells
+
+Sederhanya, <i>Web Shell</i> merupakan kode yang dibuat oleh penyerang untuk dijadikan backdoor pada server. Dengan <i>Web Shell</i>, penyerang dapat secara aktif melakukan eksekusi command server melalui website, memberikan akses jarak jauh, melakukan pivoting, menjadikan server sebagai zombie, dan tidak menutup kemungkinan meningkatkan hak akses penyerang ke tingkat yang lebih tinggi (<a href="https://www.monitorteknologi.com/apa-itu-privilege-escalation/"><i>privilege escalation</i></a>).
+
+Kegunaan Web Shell:
+
+1. Persistent Remote Access
+2. Privilege escalation
+3. Pivoting and launching attacks
+4. Turning server to a zombie
+5. Command Execution
+
+Contoh Web Shell:
+
+1. <a href="https://github.com/PinoyWH1Z/C99Shell-PHP7">C99 Shell</a>
+2. <a href="https://www.kali.org/tools/weevely/">Weevely</a>
+
+### Bagaimana Cara Mengeksekusi Kode Apabila Penyerang Tidak Dapat Memasukkan File Ke Dalam Server?
+
+Terdapat beberapa cara untuk melakukan eksploitasi LFI apabila penyerang tidak dapat memasukkan file ke dalam server, beberapa di antaranya adalah:
+
+#### Kontaminasi Log File
+1. Connect ke Webserver menggunakan netcat
+2. Kirim Payload berikut
+```php
+<?php echo '<pre>' . shell_exec($_GET['cmd']) . '</pre>';?>
+```
+3. Execute the log file
+
+#### Menggunakan PHP Wrappers
+1. Format input parameter
+```php
+data:text/plain,<?php echo shell_exec(“${payload}”) ?>
+```
+2. Ganti <b>${payload}</b> dengan command yang diperlukan
+
+### Remote File Inclusion
+
+Mirip dengan Local File Inclusion, bedanya Remote File Inclusion berarti penyerang dapat membuat website mengeksekusi file yang telah disiapkan oleh penyerang pada server penyerang, sehingga penyerang tidak perlu memasukkan file berbahaya tersebut ke server target.
+
+
+### Cara Mencegah Kerentanan File Inclusion
+
+1. Mematikan fungsi yang berkaitan dengan eksekusi shell seperti eval, shell_exec, system, exec, passthru, dan proc_open.
+2. Gunakan escapeshellarg() dan escapeshellcmd() untuk memastikan input yang dimasukkan user tidak dapat dieksekusi di shell.
+3. Atur allow_url_include ke "off" apabila tidak dibutuhkan.
+4. Lakukan sanitasi pada masukan user.
+
+## Session Hijacking
+Description of Session Hijacking goes here.
+
+## Cross-Site Scripting (XSS)
+Description of Cross-Site Scripting (XSS) goes here.
