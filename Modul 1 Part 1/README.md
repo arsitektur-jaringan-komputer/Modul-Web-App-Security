@@ -99,7 +99,12 @@ Mirip dengan Local File Inclusion, bedanya Remote File Inclusion berarti penyera
 4. Lakukan sanitasi pada masukan user.
 
 ## Session Hijacking
-Description of Session Hijacking goes here.
+
+### Deskripsi
+Session hijacking adalah ketika seseorang jahat mencoba mencuri akses ke akun atau informasi online kita dengan cara meretas atau mencuri kode khusus yang digunakan untuk mengidentifikasi kita sebagai pengguna yang sah. Dengan kode ini, mereka bisa mengendalikan akun kita dan melakukan hal-hal yang tidak baik, seperti mencuri data pribadi.
+
+### Metode
+
 
 ## Cross-Site Scripting (XSS)
 Description of Cross-Site Scripting (XSS) goes here.
