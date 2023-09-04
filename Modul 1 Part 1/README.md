@@ -110,9 +110,16 @@ Session hijacking adalah ketika seseorang jahat mencoba mencuri akses ke akun at
 - [Session Fixation](#session-fixation)
 - [Cross Site Scripting](#cross-site-scripting)
 <br>
-<br>
 
 ### Physical Access
+
+Physical access adalah akses fisik atau langsung ke perangkat keras atau tempat di mana data atau sistem komputer tersimpan. Ini berarti seseorang memiliki fisik akses ke perangkat, seperti komputer, server, atau perangkat penyimpanan, dan dapat memanipulasi atau mencuri informasi darinya. 
+
+### Session Sidejacking
+
+Session sidejacking adalah serangan yang terjadi ketika seorang penyerang berhasil mencuri atau mengakses cookie otentikasi dari komputer atau perangkat pengguna yang sah. Cookie adalah potongan kecil data yang disimpan pada perangkat pengguna oleh situs web atau aplikasi untuk mengidentifikasi pengguna yang sah selama sesi online mereka. Dengan mengambil cookie ini, penyerang dapat "mengkloning" sesi pengguna yang sah dan mendapatkan akses yang tidak sah ke akun atau layanan online tersebut.
+
+
 
 ## Cross-Site Scripting (XSS)
 Description of Cross-Site Scripting (XSS) goes here.
