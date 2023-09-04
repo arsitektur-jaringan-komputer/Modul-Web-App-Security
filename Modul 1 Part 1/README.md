@@ -105,6 +105,14 @@ Session hijacking adalah ketika seseorang jahat mencoba mencuri akses ke akun at
 
 ### Metode
 
+- [Physical Access](#physical-access)
+- [Session Sidejacking](#session-sidejacking)
+- [Session Fixation](#session-fixation)
+- [Cross Site Scripting](#cross-site-scripting)
+<br>
+<br>
+
+### Physical Access
 
 ## Cross-Site Scripting (XSS)
 Description of Cross-Site Scripting (XSS) goes here.
