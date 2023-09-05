@@ -254,7 +254,7 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
 5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d7e3e255-22a3-45c5-b3a9-b33094bcf86f)
-6. Namun, ketika dilakukan penyerangan dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>`, terjadi hasil seperti berikut
+6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>` pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/4cdcda2c-c0ba-433f-8ef6-124551768b18)
 <br>
 <br>
