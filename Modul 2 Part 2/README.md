@@ -30,3 +30,73 @@ Berikut adalah beberapa cara yang dapat dilakukan untuk menghindari serangan Mit
 
 1. Jangan meng-_install_ ekstensi browser yang tidak terverifikasi.
 2. Jangan meng-_install_ DLL, driver, maupun aplikasi yang tidak terverifikasi.
+
+#BUAT PT2.1
+
+### Blind SQL Injection
+
+Blind SQL Injection adalah jenis serangan SQL Injection yang mengajukan pertanyaan-pertanyaan true or false kepada database dan menentukan jawabannya berdasarkan respons aplikasi.
+
+Berikut adalah beberapa metode dari Blind SQL Injection:
+
+1. Union Exploitation
+2. Boolean Exploitation
+3. Time Delay Exploitation
+4. Error-based Exploitation
+5. Out of Band Exploitation
+6. Stored Procedure Injection
+
+### union
+
+### boolean
+
+### time-based
+
+Lantas, bagaimana cara mengidentifikasi kelemahan SQL Injection? Terdapat hal-hal yang dapat dilakukan, di antaranya mencari parameter, cookies, maupun header HTML yang dapat diedit. Selain itu, dapat digunakan _tool_ seperti SQLMap.
+
+Berikut adalah beberapa pencegahan SQL Injection.
+
+1. Hindari input oleh pengguna.
+
+```
+$id = $_POST[ 'id' ];
+
+$id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);
+
+$query = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+```
+
+2. Gunakan statements yang telah disiapkan sebelumnya.
+
+```
+// was a number entered?
+if(is_numeric( $id )) {
+  // check the database
+  $data = $db->prepare( 'SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;' );
+  $data->bindParam( ':id', $id, PD0::PARAM_INT );
+  $data->execute();
+  $row = $data->fetch();
+
+  // make sure only 1 result is returned
+  if( $data->rowCount() == 1 ) {
+    // get values
+    $first = $row[ 'first_name' ];
+    $last = $row[ 'last_name' ];
+
+    // feedback for end user
+    echo "<pre>ID: {$id}<br />First name: {$first)<br />Surname: {$last}</pre>";
+  }
+}
+```
+
+```
+$someVariable = Input::get("some_variable");
+
+$results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somevariable"), array('
+  somevariable' => $someVariable,
+ ));
+```
+
+3. Gunakan _stored procedures_.
+4. Pastikan pengguna database memiliki _privilege requirement_ seminimum mungkin.
+5. Gunakan _whitelist_ untuk validasi input.
