@@ -173,20 +173,11 @@ Di sini, kode digunakan untuk mengarahkan pengguna ke situs web Google. Penyeran
 
 1. Pencurian Data Sensitif 
 
-Penyerang dapat menggunakan XSS untuk mencuri informasi pribadi pengguna, seperti cookie, token otentikasi, dan data login atau data keuangan.
-
 2. Mengubah Tampilan dan Isi Dari Website
-
-Penyerang dapat mengubah tampilan halaman web dengan menyisipkan elemen kode yang tidak sah.
 
 3. Pemasangan Trojan Horse
 
-Trojan horse adalah jenis malware yang menyamar sebagai perangkat lunak yang sah. Jika seorang penyerang berhasil memasang Trojan di sistem korban, mereka dapat mengambil alih sistem tersebut, mencuri data, atau menggunakannya untuk tujuan jahat lebih lanjut.
-
 4. Mengarahkan Pengguna ke Situs Jahat
-
-Penyerang dapat mengarahkan pengguna ke situs web jahat yang dirancang untuk melakukan serangan lebih lanjut, seperti phishing atau malware.
-
 
 ### Pencegahan XSS
 
