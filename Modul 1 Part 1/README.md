@@ -129,6 +129,22 @@ Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara meman
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/b1f54ade-6c7e-43c5-9a74-bc8a458ff767)
 <br>
 
+### Pencegahan Session Hijacking
+
+- Penggunaan Secure dan HTTPOnly Flags pada Cookies
+  
+Memastikan bahwa cookie yang berisi informasi sesi hanya dikirimkan melalui koneksi HTTPS yang aman dan tidak dapat diakses oleh JavaScript dapat membantu melindungi sesi pengguna dari serangan XSS dan serangan man-in-the-middle.
+
+- Penggunaan HTTPS
+
+Menggunakan koneksi HTTPS yang aman adalah langkah kunci dalam melindungi sesi pengguna. Ini mengenkripsi data yang dikirimkan antara server dan peramban pengguna, mengurangi risiko peretasan sesi.
+
+- Pola Nama dan Nilai Cookie yang Acak
+
+Gunakan nama cookie yang sulit ditebak dan nilai yang unik untuk mengurangi risiko serangan session hijacking. Ini membuat lebih sulit bagi penyerang untuk menebak atau menebak cookie sesi pengguna.
+
+
+
 ## Cross-Site Scripting (XSS)
 
 ### Deskripsi
@@ -217,17 +233,3 @@ if ($this->security->xss_clean($file, TRUE) === FALSE) {
     // Data aman
 }
 ```
-
-### Pencegahan Session Hijacking
-
-- Penggunaan Secure dan HTTPOnly Flags pada Cookies
-  
-Memastikan bahwa cookie yang berisi informasi sesi hanya dikirimkan melalui koneksi HTTPS yang aman dan tidak dapat diakses oleh JavaScript dapat membantu melindungi sesi pengguna dari serangan XSS dan serangan man-in-the-middle.
-
-- Penggunaan HTTPS
-
-Menggunakan koneksi HTTPS yang aman adalah langkah kunci dalam melindungi sesi pengguna. Ini mengenkripsi data yang dikirimkan antara server dan peramban pengguna, mengurangi risiko peretasan sesi.
-
-- Pola Nama dan Nilai Cookie yang Acak
-
-Gunakan nama cookie yang sulit ditebak dan nilai yang unik untuk mengurangi risiko serangan session hijacking. Ini membuat lebih sulit bagi penyerang untuk menebak atau menebak cookie sesi pengguna.
