@@ -186,3 +186,57 @@ Trojan horse adalah jenis malware yang menyamar sebagai perangkat lunak yang sah
 4. Mengarahkan Pengguna ke Situs Jahat
 
 Penyerang dapat mengarahkan pengguna ke situs web jahat yang dirancang untuk melakukan serangan lebih lanjut, seperti phishing atau malware.
+
+
+### Pencegahan XSS
+
+- Penggunaan htmlentities() PHP Function
+
+Fungsi `htmlentities()` dalam PHP digunakan untuk mengonversi karakter khusus ke dalam entitas HTML sehingga mereka tidak diinterpretasikan sebagai kode HTML atau JavaScript yang berbahaya. Ini membantu dalam mencegah XSS.
+```
+$input = '<script>alert("XSS Attack")</script>';
+$output = htmlentities($input, ENT_QUOTES, 'UTF-8');
+echo $output;
+// Hasilnya: &lt;script&gt;alert(&quot;XSS Attack&quot;)&lt;/script&gt;
+```
+
+- Penggunaan xss_clean() CodeIgniter Function
+
+CodeIgniter adalah kerangka kerja PHP yang memiliki fungsi bawaan `xss_clean()` yang digunakan untuk membersihkan data input dari potensi skrip berbahaya sebelum digunakan atau disimpan dalam database.
+```
+$data = $this->input->post('input_data');
+$clean_data = $this->security->xss_clean($data);
+```
+
+- Penggunaan Laravel
+
+Dalam Laravel, sanitasi data dan melindungi dari XSS dapat dicapai dengan berbagai cara, termasuk oleh fitur yang disediakan oleh Laravel sendiri dan dengan menggunakan Blade, mesin template Laravel, yang secara otomatis menghindari XSS.
+```
+<p>{!! $user_input !!}</p>
+```
+
+- Menggunakan if Statement pada CodeIgniter
+
+Pernyataan ini digunakan untuk memeriksa apakah hasil dari `xss_clean()` dalam CodeIgniter mengembalikan `TRUE atau FALSE`. Jika mengembalikan TRUE, itu berarti data mengandung potensi XSS.
+```
+$file = $this->input->post('file_data');
+if ($this->security->xss_clean($file, TRUE) === FALSE) {
+    // Data berpotensi XSS
+} else {
+    // Data aman
+}
+```
+
+### Pencegahan Session Hijacking
+
+- Penggunaan Secure dan HTTPOnly Flags pada Cookies
+  
+Memastikan bahwa cookie yang berisi informasi sesi hanya dikirimkan melalui koneksi HTTPS yang aman dan tidak dapat diakses oleh JavaScript dapat membantu melindungi sesi pengguna dari serangan XSS dan serangan man-in-the-middle.
+
+- Penggunaan HTTPS
+
+Menggunakan koneksi HTTPS yang aman adalah langkah kunci dalam melindungi sesi pengguna. Ini mengenkripsi data yang dikirimkan antara server dan peramban pengguna, mengurangi risiko peretasan sesi.
+
+- Pola Nama dan Nilai Cookie yang Acak
+
+Gunakan nama cookie yang sulit ditebak dan nilai yang unik untuk mengurangi risiko serangan session hijacking. Ini membuat lebih sulit bagi penyerang untuk menebak atau menebak cookie sesi pengguna.
