@@ -233,3 +233,30 @@ if ($this->security->xss_clean($file, TRUE) === FALSE) {
     // Data aman
 }
 ```
+
+### Penyerangan Dengan DVWA dan XSS
+
+#### Set Up
+Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai berikut:
+
+1. Pastikan docker version adalah 23.0.5 atau terbaru
+2. Clone atau download link berikut https://github.com/digininja/DVWA
+3. Open terminal dan masuk ke dalam directory DVWA
+4. Lakukan run `docker compose up -d`
+5. Masuk ke dalam `http://localhost:4280`
+
+#### Langkah - Langkah Penyerangan
+1. Saat masuk ke dalam `localhost:4280`, tampilan DVWA akan terlihat seperti berikut.
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/599e05bb-76e6-4564-adae-e1169ac4b7f1)
+2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
+3. Set up database dengan melakukan klik pada `Create/Reset Database`   
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/68f0a8f7-1d1e-4ffb-aba8-9be466402e2a)
+4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
+5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d7e3e255-22a3-45c5-b3a9-b33094bcf86f)
+6. Namun, ketika dilakukan penyerangan dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>`, terjadi hasil seperti berikut
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/4cdcda2c-c0ba-433f-8ef6-124551768b18)
+<br>
+<br>
+
+Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window
