@@ -130,4 +130,9 @@ Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara meman
 <br>
 
 ## Cross-Site Scripting (XSS)
-Description of Cross-Site Scripting (XSS) goes here.
+
+### Deskripsi
+
+Cross-Site Scripting (XSS) adalah serangan keamanan pada aplikasi web di mana penyerang menyisipkan kode berbahaya ke dalam halaman web yang kemudian akan dieksekusi oleh pengguna yang mengunjungi halaman tersebut. Serangan ini memanfaatkan kurangnya sanitasi atau validasi data yang masuk ke dalam aplikasi web, dan ketika kode berbahaya dieksekusi, penyerang dapat mencuri data pengguna, mengendalikan sesi pengguna, atau merusak tampilan dan fungsionalitas halaman web.
+
+### Jenis
