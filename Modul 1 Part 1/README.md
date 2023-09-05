@@ -136,3 +136,42 @@ Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara meman
 Cross-Site Scripting (XSS) adalah serangan keamanan pada aplikasi web di mana penyerang menyisipkan kode berbahaya ke dalam halaman web yang kemudian akan dieksekusi oleh pengguna yang mengunjungi halaman tersebut. Serangan ini memanfaatkan kurangnya sanitasi atau validasi data yang masuk ke dalam aplikasi web, dan ketika kode berbahaya dieksekusi, penyerang dapat mencuri data pengguna, mengendalikan sesi pengguna, atau merusak tampilan dan fungsionalitas halaman web.
 
 ### Jenis
+
+#### Stored XSS
+
+Serangan di mana skrip berbahaya disimpan di server dan dieksekusi ketika pengguna mengakses halaman dengan data tersebut (misalnya, dalam posting forum).
+
+#### Reflected XSS
+
+Serangan di mana skrip berbahaya disertakan dalam permintaan atau tautan yang diberikan kepada korban dan dieksekusi saat korban mengakses tautan atau merespons permintaan tersebut. Serangan ini tidak disimpan di server.
+
+
+### Identifikasi Kerentanan XSS
+
+- Terjadi ketika sebuah situs web tidak memeriksa data yang dimasukkan oleh pengguna dengan benar sebelum menampilkannya di halaman web.
+- Contoh input yang berpotensi berbahaya termasuk karakter khusus seperti `<, >, ', ", {, }, dan ;`. Jika input ini tidak diolah dengan benar, mereka dapat digunakan oleh penyerang untuk menjalankan skrip berbahaya pada peramban pengguna lain.
+  
+### Contoh Serangan
+
+- Menampilkan Alert Window
+Dalam contoh ini, kode disisipkan dalam input pada halaman web. Ketika halaman itu dimuat oleh pengguna lain, alert window dengan pesan "1" akan muncul di peramban mereka. Ini adalah contoh dari serangan XSS yang sederhana.
+```
+<script>alert(1)</script>
+```
+- Mencuri Cookies
+Dalam contoh ini, kode digunakan untuk mencuri informasi cookie pengguna. Ketika kode ini dieksekusi, jendela peringatan akan muncul dengan daftar cookie pengguna. Penyerang dapat mengambil informasi ini untuk mengakses akun pengguna.
+```
+<script>alert(document.cookie)</script>
+```
+- Mengarahkan ke Website Lain
+Di sini, kode digunakan untuk mengarahkan pengguna ke situs web Google. Penyerang dapat memanfaatkan ini untuk mengalihkan pengguna ke situs jahat yang mungkin berisi serangan lebih lanjut.
+```
+<script>window.location='http://www.google.com'</script>
+```
+
+### Efek Dari XSS
+
+- Pencurian Informasi Pengguna
+Penyerang dapat menggunakan XSS untuk mencuri informasi pribadi pengguna, seperti cookie, token otentikasi, dan data login.
+- Mengubah Tampilan dan Isi Dari Website
+Penyerang dapat mengubah tampilan halaman web dengan menyisipkan elemen kode yang tidak sah.
