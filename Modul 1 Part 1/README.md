@@ -129,5 +129,134 @@ Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara meman
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/b1f54ade-6c7e-43c5-9a74-bc8a458ff767)
 <br>
 
+### Pencegahan Session Hijacking
+
+- Penggunaan Secure dan HTTPOnly Flags pada Cookies
+  
+Memastikan bahwa cookie yang berisi informasi sesi hanya dikirimkan melalui koneksi HTTPS yang aman dan tidak dapat diakses oleh JavaScript dapat membantu melindungi sesi pengguna dari serangan XSS dan serangan man-in-the-middle.
+
+- Penggunaan HTTPS
+
+Menggunakan koneksi HTTPS yang aman adalah langkah kunci dalam melindungi sesi pengguna. Ini mengenkripsi data yang dikirimkan antara server dan peramban pengguna, mengurangi risiko peretasan sesi.
+
+- Pola Nama dan Nilai Cookie yang Acak
+
+Gunakan nama cookie yang sulit ditebak dan nilai yang unik untuk mengurangi risiko serangan session hijacking. Ini membuat lebih sulit bagi penyerang untuk menebak atau menebak cookie sesi pengguna.
+
+
+
 ## Cross-Site Scripting (XSS)
-Description of Cross-Site Scripting (XSS) goes here.
+
+### Deskripsi
+
+Cross-Site Scripting (XSS) adalah serangan keamanan pada aplikasi web di mana penyerang menyisipkan kode berbahaya ke dalam halaman web yang kemudian akan dieksekusi oleh pengguna yang mengunjungi halaman tersebut. Serangan ini memanfaatkan kurangnya sanitasi atau validasi data yang masuk ke dalam aplikasi web, dan ketika kode berbahaya dieksekusi, penyerang dapat mencuri data pengguna, mengendalikan sesi pengguna, atau merusak tampilan dan fungsionalitas halaman web.
+
+### Jenis
+
+#### Stored XSS
+
+Serangan di mana skrip berbahaya disimpan di server dan dieksekusi ketika pengguna mengakses halaman dengan data tersebut (misalnya, dalam posting forum).
+
+#### Reflected XSS
+
+Serangan di mana skrip berbahaya disertakan dalam permintaan atau tautan yang diberikan kepada korban dan dieksekusi saat korban mengakses tautan atau merespons permintaan tersebut. Serangan ini tidak disimpan di server.
+
+
+### Identifikasi Kerentanan XSS
+
+- Terjadi ketika sebuah situs web tidak memeriksa data yang dimasukkan oleh pengguna dengan benar sebelum menampilkannya di halaman web.
+- Contoh input yang berpotensi berbahaya termasuk karakter khusus seperti `<, >, ', ", {, }, dan ;`. Jika input ini tidak diolah dengan benar, mereka dapat digunakan oleh penyerang untuk menjalankan skrip berbahaya pada peramban pengguna lain.
+  
+### Contoh Serangan
+
+- Menampilkan Alert Window
+Dalam contoh ini, kode disisipkan dalam input pada halaman web. Ketika halaman itu dimuat oleh pengguna lain, alert window dengan pesan "1" akan muncul di peramban mereka. Ini adalah contoh dari serangan XSS yang sederhana.
+```
+<script>alert(1)</script>
+```
+- Mencuri Cookies
+Dalam contoh ini, kode digunakan untuk mencuri informasi cookie pengguna. Ketika kode ini dieksekusi, jendela peringatan akan muncul dengan daftar cookie pengguna. Penyerang dapat mengambil informasi ini untuk mengakses akun pengguna.
+```
+<script>alert(document.cookie)</script>
+```
+- Mengarahkan ke Website Lain
+Di sini, kode digunakan untuk mengarahkan pengguna ke situs web Google. Penyerang dapat memanfaatkan ini untuk mengalihkan pengguna ke situs jahat yang mungkin berisi serangan lebih lanjut.
+```
+<script>window.location='http://www.google.com'</script>
+```
+
+### Efek Dari XSS
+
+1. Pencurian Data Sensitif 
+
+2. Mengubah Tampilan dan Isi Dari Website
+
+3. Pemasangan Trojan Horse
+
+4. Mengarahkan Pengguna ke Situs Jahat
+
+### Pencegahan XSS
+
+- Penggunaan htmlentities() PHP Function
+
+Fungsi `htmlentities()` dalam PHP digunakan untuk mengonversi karakter khusus ke dalam entitas HTML sehingga mereka tidak diinterpretasikan sebagai kode HTML atau JavaScript yang berbahaya. Ini membantu dalam mencegah XSS.
+```
+$input = '<script>alert("XSS Attack")</script>';
+$output = htmlentities($input, ENT_QUOTES, 'UTF-8');
+echo $output;
+// Hasilnya: &lt;script&gt;alert(&quot;XSS Attack&quot;)&lt;/script&gt;
+```
+
+- Penggunaan xss_clean() CodeIgniter Function
+
+CodeIgniter adalah kerangka kerja PHP yang memiliki fungsi bawaan `xss_clean()` yang digunakan untuk membersihkan data input dari potensi skrip berbahaya sebelum digunakan atau disimpan dalam database.
+```
+$data = $this->input->post('input_data');
+$clean_data = $this->security->xss_clean($data);
+```
+
+- Penggunaan Laravel
+
+Dalam Laravel, sanitasi data dan melindungi dari XSS dapat dicapai dengan berbagai cara, termasuk oleh fitur yang disediakan oleh Laravel sendiri dan dengan menggunakan Blade, mesin template Laravel, yang secara otomatis menghindari XSS.
+```
+<p>{!! $user_input !!}</p>
+```
+
+- Menggunakan if Statement pada CodeIgniter
+
+Pernyataan ini digunakan untuk memeriksa apakah hasil dari `xss_clean()` dalam CodeIgniter mengembalikan `TRUE atau FALSE`. Jika mengembalikan TRUE, itu berarti data mengandung potensi XSS.
+```
+$file = $this->input->post('file_data');
+if ($this->security->xss_clean($file, TRUE) === FALSE) {
+    // Data berpotensi XSS
+} else {
+    // Data aman
+}
+```
+
+### Penyerangan Dengan DVWA dan XSS
+
+#### Set Up
+Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai berikut:
+
+1. Pastikan docker version adalah 23.0.5 atau terbaru
+2. Clone atau download link berikut https://github.com/digininja/DVWA
+3. Open terminal dan masuk ke dalam directory DVWA
+4. Lakukan run `docker compose up -d`
+5. Masuk ke dalam `http://localhost:4280`
+
+#### Langkah - Langkah Penyerangan
+1. Saat masuk ke dalam `localhost:4280`, tampilan DVWA akan terlihat seperti berikut.
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/599e05bb-76e6-4564-adae-e1169ac4b7f1)
+2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
+3. Set up database dengan melakukan klik pada `Create/Reset Database`   
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/68f0a8f7-1d1e-4ffb-aba8-9be466402e2a)
+4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
+5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d7e3e255-22a3-45c5-b3a9-b33094bcf86f)
+6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>` pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/4cdcda2c-c0ba-433f-8ef6-124551768b18)
+<br>
+<br>
+
+Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window
