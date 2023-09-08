@@ -1,4 +1,4 @@
-# Modul 2 Part 2 Web App Security
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/107338432/977f04db-1317-4e32-bb37-3c8f36c1c706)# Modul 2 Part 2 Web App Security
 
 ## Man-in-the-middle Attack
 
@@ -48,17 +48,46 @@ Berikut adalah beberapa metode dari Blind SQL Injection:
 
 ### Union Exploitation
 
-Penyerang mencoba memanipulasi perintah SQL yang dieksekusi oleh aplikasi sehingga mencakup perintah UNION SQL. Perintah UNION digunakan untuk menggabungkan hasil dari dua atau lebih kueri SQL. Dengan memasukkan UNION SQL yang benar, penyerang dapat mencoba menggabungkan hasil dari kueri yang dieksekusi dengan hasil dari kueri tambahan yang mereka tentukan. Hasilnya adalah penyerang dapat melihat data yang seharusnya tidak mereka akses, seperti informasi pengguna, kata sandi, atau data sensitif lainnya yang disimpan dalam basis data.
+Operasi UNION digunakan dalam SQL Injection untuk menggabungkan hasil dari dua atau lebih query SQL dalam satu hasil yang dikembalikan oleh aplikasi web. Dengan memasukkan UNION SQL yang benar, penyerang dapat mencoba menggabungkan hasil dari query yang dieksekusi dengan hasil dari query tambahan yang mereka tentukan. Hasilnya adalah penyerang dapat melihat data yang seharusnya tidak mereka akses, seperti informasi pengguna, kata sandi, atau data sensitif lainnya yang disimpan dalam database.
+
+Contoh query:
+
+``` sql
+SELECT Name, Phone, Address FROM Users WHERE Id=$id
+
+-- Set $id to:
+-- 1 UNION ALL SELECT creditCardNumber,1,1 FROM CreditCardTable
+```
+
+Perlu diingat bahwa kata kunci 'ALL' digunakan untuk menggantikan 'DISTINCT' dan bahwa jumlah kolom dalam kedua bagian query harus sama.
+
+### Boolean Exploitation
+
+Ekploitasi berbasis boolean mengacu pada penggunaan eksploitasi atau manipulasi operasi logika boolean dalam sebuah aplikasi atau sistem.
 
 Contoh query:
 
 ```sql
-SELECT Name 
+SELECT field1, field2, field3 FROM Users WHERE Id='$Id’
+
+-- Set $id to:
+-- 1' AND '1'='2
+-- Or,
+-- 1' AND ASCII(SUBSTRING(username,1,1))=97 AND '1'='1
 ```
 
-### boolean
+### Time-based SQL Injection
 
-### time-based
+SQL Injection jenis ini dilakukan dengan mengirimkan input berbahaya ke aplikasi web untuk mencari tahu informasi tentang basis data berdasarkan waktu yang diperlukan untuk merespons permintaan. Tujuannya adalah untuk mengungkapkan informasi rahasia dari basis data secara bertahap, terutama jika aplikasi tidak memberikan respons langsung yang menunjukkan adanya kerentanan SQL Injection.
+
+Contoh query:
+
+``` sql
+SELECT * FROM products WHERE id_product=$id_product
+
+-- Set $id_product to:
+-- 10 AND IF(version() like ‘5%’, sleep(10), ‘false’))--
+```
 
 Lantas, bagaimana cara mengidentifikasi kelemahan SQL Injection? Terdapat hal-hal yang dapat dilakukan, di antaranya mencari parameter, cookies, maupun header HTML yang dapat diedit. Selain itu, dapat digunakan _tool_ seperti SQLMap.
 
@@ -66,7 +95,7 @@ Berikut adalah beberapa pencegahan SQL Injection.
 
 1. Hindari input oleh pengguna.
 
-```
+``` php
 $id = $_POST[ 'id' ];
 
 $id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);
@@ -76,7 +105,7 @@ $query = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
 
 2. Gunakan statements yang telah disiapkan sebelumnya.
 
-```
+``` php
 // was a number entered?
 if(is_numeric( $id )) {
   // check the database
@@ -97,7 +126,7 @@ if(is_numeric( $id )) {
 }
 ```
 
-```
+``` php
 $someVariable = Input::get("some_variable");
 
 $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somevariable"), array('
