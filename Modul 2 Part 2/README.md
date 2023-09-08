@@ -46,7 +46,15 @@ Berikut adalah beberapa metode dari Blind SQL Injection:
 5. Out of Band Exploitation
 6. Stored Procedure Injection
 
-### union
+### Union Exploitation
+
+Penyerang mencoba memanipulasi perintah SQL yang dieksekusi oleh aplikasi sehingga mencakup perintah UNION SQL. Perintah UNION digunakan untuk menggabungkan hasil dari dua atau lebih kueri SQL. Dengan memasukkan UNION SQL yang benar, penyerang dapat mencoba menggabungkan hasil dari kueri yang dieksekusi dengan hasil dari kueri tambahan yang mereka tentukan. Hasilnya adalah penyerang dapat melihat data yang seharusnya tidak mereka akses, seperti informasi pengguna, kata sandi, atau data sensitif lainnya yang disimpan dalam basis data.
+
+Contoh query:
+
+```sql
+SELECT Name 
+```
 
 ### boolean
 
