@@ -252,11 +252,22 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 3. Set up database dengan melakukan klik pada `Create/Reset Database`   
    ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/68f0a8f7-1d1e-4ffb-aba8-9be466402e2a)
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
-5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/8ba75777-4dfa-48ee-a1a7-c690e00f6c70)
+6. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d7e3e255-22a3-45c5-b3a9-b33094bcf86f)
-6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>` pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
+7. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>` pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
 ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/4cdcda2c-c0ba-433f-8ef6-124551768b18)
 <br>
 <br>
 
-Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window
+Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window dalam mode low. Untuk selanjutnya merupakan contoh penyerangan dalam mode medium. Langkah - langkah dari penyerangan ini sama seperti pada mode low, namun ada sedikit perbedaan seperti mengubah pengaturan tingkat modenya dari low menjadi medium dan contoh penyerangannya. Berikut merupakan detail dari perbedaan tersebut:
+
+1. Tingkat kesulitan diganti menjadi `medium` pada opsi bar `DVWA Security`
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/35de150b-0a6c-4ebb-97b3-7e50148bf00b)
+2. Lalu pada opsi bar `XSS (Reflected)`, masukkan code untuk penyerangan. Dalam hal ini diketikkan code seperti di bawah ini untuk melakukan penyerangan
+   ```
+   <img src="x" onerror="alert('XSS Medium')">
+   ```
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/335d8d1b-79d3-47b3-9c58-15d948eaae36)
+3. Setelah itu, klik tombol `submit` dan akan keluar hasil seperti berikut
+   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/29347b25-b4a6-4b25-b988-a1498964ebdf)
