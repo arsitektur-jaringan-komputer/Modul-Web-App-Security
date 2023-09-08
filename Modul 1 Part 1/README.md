@@ -108,7 +108,7 @@ Session hijacking adalah ketika seseorang jahat mencoba mencuri akses ke akun at
 - [Physical Access](#physical-access)
 - [Session Sidejacking](#session-sidejacking)
 - [Session Fixation](#session-fixation)
-- [Cross Site Scripting](#cross-site-scripting-(XSS))
+- [Cross-Site Scripting (XSS)](#cross-site-scripting-xss)
 <br>
 
 ### Physical Access
