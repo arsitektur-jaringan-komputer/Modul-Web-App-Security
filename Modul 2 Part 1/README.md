@@ -186,7 +186,107 @@ Cara:
 
     <img width="557" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/caae5d84-6c7f-4565-b203-c8ab648bba77">
 
+### Blind SQL Injection
 
+Blind SQL Injection adalah jenis serangan SQL Injection yang mengajukan pertanyaan-pertanyaan true or false kepada database dan menentukan jawabannya berdasarkan respons aplikasi.
 
+Berikut adalah beberapa metode dari Blind SQL Injection:
 
+1. Union Exploitation
+2. Boolean Exploitation
+3. Time Delay Exploitation
+4. Error-based Exploitation
+5. Out of Band Exploitation
+6. Stored Procedure Injection
 
+### Union Exploitation
+
+Operasi UNION digunakan dalam SQL Injection untuk menggabungkan hasil dari dua atau lebih query SQL dalam satu hasil yang dikembalikan oleh aplikasi web. Dengan memasukkan UNION SQL yang benar, penyerang dapat mencoba menggabungkan hasil dari query yang dieksekusi dengan hasil dari query tambahan yang mereka tentukan. Hasilnya adalah penyerang dapat melihat data yang seharusnya tidak mereka akses, seperti informasi pengguna, kata sandi, atau data sensitif lainnya yang disimpan dalam database.
+
+Contoh query:
+
+``` sql
+SELECT Name, Phone, Address FROM Users WHERE Id=$id
+
+-- Set $id to:
+-- 1 UNION ALL SELECT creditCardNumber,1,1 FROM CreditCardTable
+```
+
+Perlu diingat bahwa kata kunci 'ALL' digunakan untuk menggantikan 'DISTINCT' dan bahwa jumlah kolom dalam kedua bagian query harus sama.
+
+### Boolean Exploitation
+
+Ekploitasi berbasis boolean mengacu pada penggunaan eksploitasi atau manipulasi operasi logika boolean dalam sebuah aplikasi atau sistem.
+
+Contoh query:
+
+```sql
+SELECT field1, field2, field3 FROM Users WHERE Id='$Id’
+
+-- Set $id to:
+-- 1' AND '1'='2
+-- Or,
+-- 1' AND ASCII(SUBSTRING(username,1,1))=97 AND '1'='1
+```
+
+### Time-based SQL Injection
+
+SQL Injection jenis ini dilakukan dengan mengirimkan input berbahaya ke aplikasi web untuk mencari tahu informasi tentang basis data berdasarkan waktu yang diperlukan untuk merespons permintaan. Tujuannya adalah untuk mengungkapkan informasi rahasia dari basis data secara bertahap, terutama jika aplikasi tidak memberikan respons langsung yang menunjukkan adanya kerentanan SQL Injection.
+
+Contoh query:
+
+``` sql
+SELECT * FROM products WHERE id_product=$id_product
+
+-- Set $id_product to:
+-- 10 AND IF(version() like ‘5%’, sleep(10), ‘false’))--
+```
+
+Lantas, bagaimana cara mengidentifikasi kelemahan SQL Injection? Terdapat hal-hal yang dapat dilakukan, di antaranya mencari parameter, cookies, maupun header HTML yang dapat diedit. Selain itu, dapat digunakan _tool_ seperti SQLMap.
+
+Berikut adalah beberapa pencegahan SQL Injection.
+
+1. Hindari input oleh pengguna.
+
+``` php
+$id = $_POST[ 'id' ];
+
+$id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);
+
+$query = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+```
+
+2. Gunakan statements yang telah disiapkan sebelumnya.
+
+``` php
+// was a number entered?
+if(is_numeric( $id )) {
+  // check the database
+  $data = $db->prepare( 'SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;' );
+  $data->bindParam( ':id', $id, PD0::PARAM_INT );
+  $data->execute();
+  $row = $data->fetch();
+
+  // make sure only 1 result is returned
+  if( $data->rowCount() == 1 ) {
+    // get values
+    $first = $row[ 'first_name' ];
+    $last = $row[ 'last_name' ];
+
+    // feedback for end user
+    echo "<pre>ID: {$id}<br />First name: {$first)<br />Surname: {$last}</pre>";
+  }
+}
+```
+
+``` php
+$someVariable = Input::get("some_variable");
+
+$results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somevariable"), array('
+  somevariable' => $someVariable,
+ ));
+```
+
+3. Gunakan _stored procedures_.
+4. Pastikan pengguna database memiliki _privilege requirement_ seminimum mungkin.
+5. Gunakan _whitelist_ untuk validasi input.
