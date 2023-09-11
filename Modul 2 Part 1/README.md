@@ -42,7 +42,7 @@ Berikut contoh kodenya:
 
 ### Serangan di DVWA dengan security level low
 
-> Disini, kita gunakan OS Kali Linux
+> Disini, kita gunakan OS Kali Linux  
 > Task: Membuat current user untuk mengubah password tanpa mereka ketahui
 
 Cara:
@@ -88,7 +88,7 @@ Cara:
   
 ### Serangan di DVWA dengan security level medium
 
-> Disini, kita gunakan OS Kali Linux
+> Disini, kita gunakan OS Kali Linux  
 > Task: Membuat current user untuk mengubah password tanpa mereka ketahui. Untuk menembus proteksi pengecekan referer, maka jebakan script harus attacker tanam di website tersebut. Apabila hal tersebut berhasil, maka attacker memiliki referer ke DVWA>  
 
 Cara:
