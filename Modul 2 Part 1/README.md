@@ -40,8 +40,52 @@ Berikut contoh kodenya:
    * HTTPS menyediakan enkripsi lalu lintas data antara klien dan server, sehingga sulit bagi penyerang untuk memanipulasi atau membaca data yang ditransfer.
    * HTTPS juga membantu memastikan integritas data yang dikirimkan antara pengguna dan server
 
+### Serangan di DVWA dengan security level low
 
+> Disini, kita gunakan OS Kali Linux
+> Task: Membuat current user untuk mengubah password tanpa mereka ketahui
 
+Cara:
+1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux
+    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
+
+2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`
+    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+
+3. Kita lakukan login dengan `username: admin` dan `password: password`
+
+    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
+
+4. Kita set `security level: low`
+
+   <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
+
+5. Kita masuk ke tab `CSRF`
+
+   <img width="562" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/095328a2-7314-4330-8f38-7e3087f869dd">
+
+6. Disini, kita dapat mengubah password dari current user secara diam-diam dengan memasukkan password baru di `new password` dan konfirmasi di `confirm new password`. Awalnya, password dari user `admin` adalah `password`. Kita coba ubah passwordnya menjadi `123`
+
+   <img width="225" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/3e2c6e24-faec-4904-a107-5e344244f7f9">
+
+7. Saat kita klik tombol change, maka password otomatis keubah. Hal ini dapat kita lihat dari `Test Credentials`
+
+   <img width="184" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5266dfa0-5747-4f41-bdbb-51ba1c6f1237">
+
+    <img width="195" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/83ea379e-2a4b-40d1-9888-028a852ba9ce">
+
+8. Hal ini dapat terjadi karena ada beberapa kerentanan. Mari kita bedah satu per satu:  
+   a. Kerentanan dari source code saat klik `Change`
+        ![csrf](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7c4d5694-7bcd-4084-a639-9de5e1e78888)
+
+   * Dari kode tersebut, dapat kita lihat bahwa memakai method `GET` yang berarti data dikirim melalui URL.
+   * Dari kode tersebut juga, kita dapat langsung melakukan update ketika `new password == configurasi password` yang berarti tidak ada security tambahan untuk mengecek kredensial tersebut
+
+   b. Kerentanan dari url akibat method `GET`  
+       <img width="476" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7ea367f9-e391-4ddf-89c3-a4e46450877d">
+       
+   * Dari link `http://127.0.0.1/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change#` maka web akan auto update password pada current user.
+    
 ## SQL Injection
 
 ### Deskripsi
@@ -89,7 +133,59 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
 * Mengenal DBMS yang digunakan membuat penyerang memiliki kemampuan untuk menyesuaikan serangan secara khusus ke DBMS tersebut.
 * Cara mencegah serangan ke DBMS dari error messages:
   - Menyembunyikan error messages dari users
-  
+
+### Serangan di DVWA dengan security level low
+
+> Disini, kita gunakan OS Kali Linux
+> Task: Curi password dari users yang terdapat dalam database DVWA dengan menggunakan sql. Total users dalam database adalah 5 users dengan id dari 1 hingga 5.
+
+Cara: 
+1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux
+    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
+
+2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`
+    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+
+3. Kita lakukan login dengan `username: admin` dan `password: password`
+
+    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
+
+4. Kita set `security level: low`
+
+   <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
+
+5. Kita masuk ke tab `SQL Injection`
+
+   <img width="549" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d5b47694-f22d-4ac1-a339-3ac96608b603">
+
+6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:
+    <img width="283" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f75e7b39-62da-409b-b39d-1b4e65f4aba6">
+
+7. Kita bedah source codenya:
+
+   ![sql_injection](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a28209da-ad4d-4c26-827e-ac6beb532da2)
+
+* Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:
+
+  ```
+  $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+  ```
+* Untuk mendapatkan password, kita gunakan syntax `union` untuk mengambil password dari `id = 1`
+
+  ``` SELECT first_name, last_name FROM users WHERE user_id = '1' UNION SELECT password, null FROM users -- '; ```
+
+* Setelah itu, kita masukkan ke text input `User ID`
+  `1' UNION SELECT password, null FROM users -- '; ``` `
+
+  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.
+
+8. Hasil serangan:
+   <img width="398" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a66c2bd3-32c0-47a5-aacf-245a7c602306">
+
+9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`
+
+    <img width="557" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/caae5d84-6c7f-4565-b203-c8ab648bba77">
+
 
 
 
