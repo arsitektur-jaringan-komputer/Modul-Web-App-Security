@@ -156,30 +156,30 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 
 #### Langkah - Langkah Penyerangan
 1. Saat masuk ke dalam `localhost:4280`, tampilan DVWA akan terlihat seperti berikut.
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/599e05bb-76e6-4564-adae-e1169ac4b7f1)
+   ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/442365a1-feea-4676-812e-2e8296ed80ef)
 2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
 3. Set up database dengan melakukan klik pada `Create/Reset Database`   
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/68f0a8f7-1d1e-4ffb-aba8-9be466402e2a)
+   ![Screenshot from 2023-09-13 18-56-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f69d9871-cb9d-411f-89de-9df36bd2c2fe)
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/8ba75777-4dfa-48ee-a1a7-c690e00f6c70)
+   ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/7bde1b96-54dd-456e-8012-d235b862ddd5)
 6. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d7e3e255-22a3-45c5-b3a9-b33094bcf86f)
+   ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d534a702-de6c-4870-872e-bbf38d8b9ba7)
 7. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa `<script>alert("XSS Challenge")</script>` pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/4cdcda2c-c0ba-433f-8ef6-124551768b18)
+   ![Screenshot from 2023-09-13 18-43-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/39cb7a28-efc4-42f2-ba11-45d322414da8)
 <br>
 <br>
 
 Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window dalam mode low. Untuk selanjutnya merupakan contoh penyerangan dalam mode medium. Langkah - langkah dari penyerangan ini sama seperti pada mode low, namun ada sedikit perbedaan seperti mengubah pengaturan tingkat modenya dari low menjadi medium dan contoh penyerangannya. Berikut merupakan detail dari perbedaan tersebut:
 
 1. Tingkat kesulitan diganti menjadi `medium` pada opsi bar `DVWA Security`
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/35de150b-0a6c-4ebb-97b3-7e50148bf00b)
+   ![Screenshot from 2023-09-13 18-43-36](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f34effbd-0b28-4a18-aa97-c3bee471c5fd)
 2. Lalu pada opsi bar `XSS (Reflected)`, masukkan code untuk penyerangan. Dalam hal ini diketikkan code seperti di bawah ini untuk melakukan penyerangan
    ```
    <img src="x" onerror="alert('XSS Medium')">
    ```
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/335d8d1b-79d3-47b3-9c58-15d948eaae36)
+   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/943120b2-05ca-4cde-a665-d787c2f1fb2c)
 3. Setelah itu, klik tombol `submit` dan akan keluar hasil seperti berikut
-   ![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/29347b25-b4a6-4b25-b988-a1498964ebdf)
+   ![Screenshot from 2023-09-13 18-43-59](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/646840ad-60e1-4c1e-9403-8f653b9aa6fd)
 
 ## Cross Site Request Forgery 
 
