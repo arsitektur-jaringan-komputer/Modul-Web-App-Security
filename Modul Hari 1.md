@@ -512,7 +512,7 @@ Kode ini akan melakukan perintah server sesuai dengan masukan yang diberikan pad
 - Terdapat 3 opsi file yang ketika ditekan akan menampilkan isi dari file tersebut
 - Pilih salah satu, dan anda bisa melihat bahwa nama dari file akan muncul di request parameter
 ```
-http://ip_mesin:4312/vulnerabilities/fi/?page=file1.php
+http://ip_mesin/vulnerabilities/fi/?page=file1.php
 ```
 
 #### LOCAL FILE INCLUSION PAYLOAD
