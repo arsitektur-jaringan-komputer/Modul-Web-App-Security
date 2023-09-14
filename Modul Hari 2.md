@@ -5,7 +5,7 @@
 - [Cross Site Request Forgery](#directory-traversal-vulnerabilities)
 - [Man In The Middle](#directory-traversal-vulnerabilities)
 - [Man In The Browser](#directory-traversal-vulnerabilities)
-- [Insecure Direct Object Reference](#file-inclusion-vulnerabilities)
+- [Insecure Direct Object Reference](#file-inclusion-vulnerabilities) 
 
 ## Session Hijacking
 
