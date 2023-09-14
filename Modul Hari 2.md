@@ -163,13 +163,13 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
    ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/e1466d66-ad6f-4dfd-a45a-66b975a42f67)
 5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
-   ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d534a702-de6c-4870-872e-bbf38d8b9ba7)
+   ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/a50a7db3-7093-46d3-8938-48501f9a976e)
 6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa
    ```
    <script>alert("XSS Challenge")</script>
    ```
    pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
-   ![Screenshot from 2023-09-13 18-43-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/39cb7a28-efc4-42f2-ba11-45d322414da8)
+   ![Screenshot from 2023-09-13 18-43-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/58656d46-1300-4f06-80ee-a0ffed9d8e5f)
 <br>
 <br>
 
