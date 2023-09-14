@@ -28,14 +28,14 @@ Physical access adalah akses fisik atau langsung ke perangkat keras atau tempat 
 
 Session sidejacking adalah serangan yang terjadi ketika seorang penyerang berhasil mencuri atau mengakses cookie otentikasi dari komputer atau perangkat pengguna yang sah. Cookie adalah potongan kecil data yang disimpan pada perangkat pengguna oleh situs web atau aplikasi untuk mengidentifikasi pengguna yang sah selama sesi online mereka. Dengan mengambil cookie ini, penyerang dapat "mengkloning" sesi pengguna yang sah dan mendapatkan akses yang tidak sah ke akun atau layanan online tersebut.
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/2e0e9d02-65e6-4a06-ab7f-96ecc66946c3)
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/c4dafe98-7965-4ff9-bc99-4f25b2bc4de6)
 <br>
 
 ### Session Fixation
 
 Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara memanipulasi atau menetapkan ID sesi (session ID) pengguna pada suatu situs web atau aplikasi sebelum pengguna melakukan login atau sesi awal mereka. Penyerang mencoba memaksa pengguna untuk menggunakan ID sesi yang telah mereka tetapkan, yang memungkinkan penyerang untuk mengendalikan atau memonitor sesi pengguna tersebut. Ini dapat digunakan untuk mendapatkan akses tanpa izin ke akun pengguna atau untuk mencuri data pribadi mereka selama sesi. 
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/b1f54ade-6c7e-43c5-9a74-bc8a458ff767)
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/34031bc7-f10e-4194-8886-879a290d1377)
 <br>
 
 ### Pencegahan Session Hijacking
