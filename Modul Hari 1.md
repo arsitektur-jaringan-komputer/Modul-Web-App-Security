@@ -64,6 +64,7 @@ Cara:
 ifconfig
 ```
 cari ip dengan awalan 192
+
 2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
     ![DVWA](src/DVWA.png)
 
