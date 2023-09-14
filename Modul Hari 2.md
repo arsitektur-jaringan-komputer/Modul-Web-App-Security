@@ -159,7 +159,7 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
    ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/6ed23513-4cbc-4456-be78-fbf1595d404f)
 2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
 3. Set up database dengan melakukan klik pada `Create/Reset Database`   
-   ![Screenshot from 2023-09-13 18-42-04](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d4966a03-75b8-4c96-83a0-ad988e091e0d)
+   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/93f07a54-016a-4b67-bd4f-c66de8738ad0)
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
    ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/e1466d66-ad6f-4dfd-a45a-66b975a42f67)
 5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
@@ -176,14 +176,14 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window dalam mode low. Untuk selanjutnya merupakan contoh penyerangan dalam mode medium. Langkah - langkah dari penyerangan ini sama seperti pada mode low, namun ada sedikit perbedaan seperti mengubah pengaturan tingkat modenya dari low menjadi medium dan contoh penyerangannya. Berikut merupakan detail dari perbedaan tersebut:
 
 1. Tingkat kesulitan diganti menjadi `medium` pada opsi bar `DVWA Security`
-   ![Screenshot from 2023-09-13 18-43-36](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f34effbd-0b28-4a18-aa97-c3bee471c5fd)
+   ![Screenshot from 2023-09-13 18-43-36](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/106cee78-cc0b-41f8-a89d-91aab0c752f1)
 2. Lalu pada opsi bar `XSS (Reflected)`, masukkan code untuk penyerangan. Dalam hal ini diketikkan code seperti di bawah ini untuk melakukan penyerangan
    ```
    <img src="x" onerror="alert('XSS Medium')">
    ```
-   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/943120b2-05ca-4cde-a665-d787c2f1fb2c)
+   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/64e4fe3f-2b8f-4886-84a5-b9380d5c20e0)
 3. Setelah itu, klik tombol `submit` dan akan keluar hasil seperti berikut
-   ![Screenshot from 2023-09-13 18-43-59](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/646840ad-60e1-4c1e-9403-8f653b9aa6fd)
+   ![Screenshot from 2023-09-13 18-43-59](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/96ccc7a8-bd8b-497d-9a19-30c053805f9a)
 
 ## Cross Site Request Forgery 
 
