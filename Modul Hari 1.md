@@ -45,7 +45,7 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
    * Kesalahan yang diberikan oleh aplikasi web dapat memberikan petunjuk tentang kerentanan SQL Injection.
   
 #### Pesan dari Error messages yang dapat kita ambil
-![Alt text](image.png)
+![Error Message SQL](src/ErrorMesageSQL.png)
 
 * Masing-masing DBMS (Database Management System) memiliki error messages yang unik
 * Mengenal DBMS yang digunakan membuat penyerang memiliki kemampuan untuk menyesuaikan serangan secara khusus ke DBMS tersebut.
@@ -58,27 +58,28 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
 > Task: Curi password dari users yang terdapat dalam database DVWA dengan menggunakan sql. Total users dalam database adalah 5 users dengan id dari 1 hingga 5.
 
 Cara: 
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    ![Alt text](image-1.png) 
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    ![Alt text](image-2.png)
+1. Cek IP dari DVWA di vm metasploitable menggunakan command 
+```
+ifconfig
+```
+cari ip dengan awalan 192
+2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
+    ![DVWA](src/DVWA.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-   ![Alt text](image-3.png)
-
 4. Kita set `security level: low`  
 
-   ![Alt text](image-4.png)
+   ![LowSec](src/LowSec.png)
 
 5. Kita masuk ke tab `SQL Injection`  
 
-   ![Alt text](image-5.png)
+   ![SQLISec](src/SQLISEC.png)
 
 6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:  
 
-   ![Alt text](image-6.png)
+   ![SQLI1](src/SQLI1.png)
 
 7. Kita bedah source codenya:  
 
@@ -98,11 +99,11 @@ Cara:
   Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
 
 8. Hasil serangan:  
-   ![Alt text](image-7.png)
+   ![SQLI2](src/SQLI2.png)
 
 9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`  
 
-   ![Alt text](image-8.png)
+   ![SQLI3](src/SQLI3.png) 
 
 ### Serangan di DVWA dengan security level medium
 
@@ -260,25 +261,24 @@ $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somev
 > Disini, kita gunakan OS Kali Linux
 > Task: Menemukan kode yang tepat sesuai dengan versi dari sql database software melalui blind sql attack. Sebab, biasanya kalau syntax tidak sesuai akan muncul eror
 
-Cara:
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    ![Alt text](image-1.png) 
-
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    ![Alt text](image-2.png)
+Cara: 
+1. Cek IP dari DVWA di vm metasploitable menggunakan command 
+```
+ifconfig
+```
+cari ip dengan awalan 192
+2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
+    ![DVWA](src/DVWA.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-   ![Alt text](image-3.png)
-
 4. Kita set `security level: low`  
 
-   ![Alt text](image-4.png)
-
+   ![LowSec](src/LowSec.png)
 
 5. Kita masuk ke tab `SQL Injection (Blind)`  
 
-   ![Alt text](image-9.png)
+   ![SQLBlind](src/SQLB1.png)
 
 6. Kita perhatikan source codenya:  
 
@@ -344,28 +344,28 @@ if( isset( $_GET[ 'Submit' ] ) ) {
    * Kita ingin cek apakah terdapat `User ID: 1` pada database tersebut dengan cara:
      > http://127.0.0.1/DVWA/vulnerabilities/sqli_blind/?id=1' and 1=1 -- -'7&Submit=Submit#  
          Hasilnya:  
-         ![Alt text](image-10.png)
+         ![SQLB2](src/SQLB2.png)
 
      > Url tersebut berarti id=1 dapat dicari apabila nilai 1=1
      > Apabila nilai 1=0, maka hasilnya salah. Hal tersebut, dibuktikan dengan:  
-         ![Alt text](image-11.png)
+         ![SQLB3](src/SQLB3.png)
 
    * Kita ingin mengetahui kata pertama dari data di database itu. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:
 
      > 1' and (select substring(database(), 1, 1))="a" -- -'      
  
          Maka hasilnya:    
-         ![Alt text](image-12.png) 
+         ![SQLB4](src/SQLB4.png)
 
      > Lalu saat kita ubah jadi huruf lain, dengan:  
          1' and (select substring(database(), 1, 1))="d" -- -'    
-         ![Alt text](image-14.png)  
+         ![SQLB5](src/SQLB5.png) 
          Maka hasilnya:    
-            ![Alt text](image-13.png)
+            ![SQLB6](src/SQLB6.png) 
          Artinya: kata pertama dari id=1 pada database adalah `d`  
     * Kita ingin mengetahui kata kedua dari data di database. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:   
       > 1' and (select substring(database(), 2, 1))="a" -- -'  
-          ![Alt text](image-15.png) 
+          ![SQLB7](src/SQLB7.png) 
       > Kita tebak dari a hingga z, mana huruf yang cocok. Jika cocok, maka huruf tersebut merupakan kata kedua dari User ID tersebut. 
 
 ### Serangan di DVWA dengan security level medium
