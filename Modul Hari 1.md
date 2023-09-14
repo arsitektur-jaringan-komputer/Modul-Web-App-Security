@@ -45,7 +45,7 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
    * Kesalahan yang diberikan oleh aplikasi web dapat memberikan petunjuk tentang kerentanan SQL Injection.
   
 #### Pesan dari Error messages yang dapat kita ambil
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/16a49d95-5b58-4fe4-9fa3-7364fc02eeeb)
+![Alt text](image.png)
 
 * Masing-masing DBMS (Database Management System) memiliki error messages yang unik
 * Mengenal DBMS yang digunakan membuat penyerang memiliki kemampuan untuk menyesuaikan serangan secara khusus ke DBMS tersebut.
@@ -59,10 +59,10 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
 
 Cara: 
 1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
+    ![Alt text](image-1.png) 
 
 2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+    ![Alt text](image-2.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
@@ -110,10 +110,10 @@ Cara:
 Cara:
 1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
-![change diff](src/difficulty.png)
+![change diff](./src/difficulty.png)
 
 2. Buka tab `SQL Injection` dan lihat source nya  
->![source](src/source.png)  
+>![source](./src/source.png)    
 >Dapat dilihat bahwa pada bagian pengeksekusian query hampir sama dengan diff low hanya saja pada `$id` tidak ada tanda petik serta pengiriman data menggunakan _POST sehingga query yang akan di inject akan sedikit berbeda
 
 3. Query yang akan di inject berupa:  
@@ -130,17 +130,17 @@ Cara:
 4. Injek query yang sudah disiapkan melalui `inspect`  
 >Kenapa menggunakan `inspect`? karena field id berupa optian bukan textbox sehingga tidak dapat mengetik secara langsung  
 
->![inspect](src/inspect.png)  
+>![inspect](./src/inspect.png)  
 >tahapan inspect:
 >
 >klik kanan, pilih inspect, klik icon kotak-kursor pada bagian pojok kiri atas jendela inspect, lalu klik field option id  
 
->![query injection](src/injection.png)  
+>![query injection](./src/injection.png)  
 >letakkan query kedalam value pada salah satu tag option
 
 5. Tekan tombol Submit dan hasilnya akan keluar  
 
->![hasil](src/hasil.png)  
+>![hasil](./src/hasil.png)  
 >hasil injeksi dapat dilihat pada baris data setelah baris pertama (admin/admin)
 >
 >first_name = first_name
@@ -319,21 +319,21 @@ Cara:
 ### Serangan di DVWA dengan security level medium
 1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
-![change diff](src/blind_diff.png)
+![change diff](./src/blind_diff.png)
 
 2. Buka tab `SQL Injection (Blind)` kemudian inspect, pilih tab network, lalu klik submit  
 
-![network](src/blind_network.png)
+![network](./src/blind_network.png)
 
 3. Pilih data teratas dan catat cookies dan raw requestnya
 >Pilih tab `Cookies` pada bagian bawah untuk melihat cookies yang ada  
->![cookies](src/blind_cookies.png)
+>![cookies](./src/blind_cookies.png)
 
 >Pilih tab `Request` pada bagian bawah lalu tekan togle `Raw` untuk melihat raw request yang dikirimkan  
->![request](src/blind_request.png)
+>![request](./src/blind_request.png)
 
 >catat dengan format yang sesuai pada gambar dibawah  
->![note](src/blind_note.png)
+>![note](./src/blind_note.png)
 
 4. Buka terminal dan jalankan command sqlmap berikut:
 ```
@@ -347,7 +347,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" --dbms --batch
 >
 >`[request]` = raw request yang telah dicatat sesuai format 
   
-![sqlmap1](src/blind_sqlmap1.png)
+![sqlmap1](./src/blind_sqlmap1.png)
 Didapatkan daftar database yang ada pada server
 ```
 [*] dvwa
@@ -360,7 +360,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa --tables --bat
 ```
 >command di atas akan menampilkan tabel yang ada dalam database dvwa  
 
-![sqlmap2](src/blind_sqlmap2.png)
+![sqlmap2](./src/blind_sqlmap2.png)
 
 6. Ubah lagi command sqlmap sebelumnya untuk menampilkan data dalam tabel users
 ```
@@ -368,7 +368,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa -T users --dum
 ```
 >--dump digunakan untuk menampilkan semua data didalam sebuah tabel  
 
-![sqlmap3](src/blind_sqlmap3.png)
+![sqlmap3](./src/blind_sqlmap3.png)
 >karena enkripsi password yang sederhana menggunakan `md5`, sqlmap secara otomatis mendekripsi semua password yang ada
 
 ## Directory Traversal Vulnerabilities
