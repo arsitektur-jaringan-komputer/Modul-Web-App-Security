@@ -156,15 +156,15 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 
 #### Langkah - Langkah Penyerangan
 1. Saat masuk ke dalam `localhost:4280`, tampilan DVWA akan terlihat seperti berikut.
-   ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/442365a1-feea-4676-812e-2e8296ed80ef)
+   ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/6ed23513-4cbc-4456-be78-fbf1595d404f)
 2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
 3. Set up database dengan melakukan klik pada `Create/Reset Database`   
-   ![Screenshot from 2023-09-13 18-56-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f69d9871-cb9d-411f-89de-9df36bd2c2fe)
+   ![Screenshot from 2023-09-13 18-42-04](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d4966a03-75b8-4c96-83a0-ad988e091e0d)
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
-   ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/7bde1b96-54dd-456e-8012-d235b862ddd5)
-6. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
+   ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/e1466d66-ad6f-4dfd-a45a-66b975a42f67)
+5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
    ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d534a702-de6c-4870-872e-bbf38d8b9ba7)
-7. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa
+6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa
    ```
    <script>alert("XSS Challenge")</script>
    ```
