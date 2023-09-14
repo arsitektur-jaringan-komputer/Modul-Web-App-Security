@@ -81,7 +81,6 @@ Cara:
 
 7. Kita bedah source codenya:  
 
-   ![sql_injection](https://raw.githubusercontent.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/master/src/injection.png)
 
 * Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:  
 
@@ -595,7 +594,7 @@ Ketika server memiliki kelemahan File Inclusion, penyerang dapat memasukkan alam
 
 Hasilnya seperti berikut:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/36f463f8-f00a-4877-b6bb-fca035801deb)
+![RFI6](src/RFI6.png)
 
 Penyerang berhasil masuk ke dalam server.
 
