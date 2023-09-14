@@ -81,7 +81,7 @@ Cara:
 
 7. Kita bedah source codenya:  
 
-   ![sql_injection](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a28209da-ad4d-4c26-827e-ac6beb532da2)
+   ![sql_injection](https://raw.githubusercontent.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/master/src/injection.png)
 
 * Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:  
 
