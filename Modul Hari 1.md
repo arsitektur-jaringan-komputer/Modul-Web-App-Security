@@ -66,18 +66,19 @@ Cara:
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
+   ![Alt text](image-3.png)
 
 4. Kita set `security level: low`  
 
-   <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
+   ![Alt text](image-4.png)
 
 5. Kita masuk ke tab `SQL Injection`  
 
-   <img width="549" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d5b47694-f22d-4ac1-a339-3ac96608b603">
+   ![Alt text](image-5.png)
 
 6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:  
-    <img width="283" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f75e7b39-62da-409b-b39d-1b4e65f4aba6">
+
+   ![Alt text](image-6.png)
 
 7. Kita bedah source codenya:  
 
@@ -97,11 +98,11 @@ Cara:
   Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
 
 8. Hasil serangan:  
-   <img width="398" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a66c2bd3-32c0-47a5-aacf-245a7c602306">
+   ![Alt text](image-7.png)
 
 9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`  
 
-    <img width="557" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/caae5d84-6c7f-4565-b203-c8ab648bba77">
+   ![Alt text](image-8.png)
 
 ### Serangan di DVWA dengan security level medium
 
@@ -261,28 +262,78 @@ $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somev
 
 Cara:
 1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
+    ![Alt text](image-1.png) 
 
 2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">  
+    ![Alt text](image-2.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">  
+   ![Alt text](image-3.png)
 
 4. Kita set `security level: low`  
 
-    <img width="444" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4c712f9d-0643-48bb-844a-f0fb518db834">  
+   ![Alt text](image-4.png)
 
 
 5. Kita masuk ke tab `SQL Injection (Blind)`  
 
-   <img width="463" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0dc7f977-d613-4e67-acb3-8ed1fc412b7f">  
+   ![Alt text](image-9.png)
 
 6. Kita perhatikan source codenya:  
 
-   ![3](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0ac82a61-f377-40fd-831d-0f92e04ba2d5)  
+``` php
+<?php
+if( isset( $_GET[ 'Submit' ] ) ) {
+    // Get input
+    $id = $_GET[ 'id' ];
+    $exists = false;
 
+    switch ($_DVWA['SQLI_DB']) {
+        case MYSQL:
+            // Check database
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+            $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ); // Removed 'or die' to suppress mysql errors
+
+            $exists = false;
+            if ($result !== false) {
+                try {
+                    $exists = (mysqli_num_rows( $result ) > 0);
+                } catch(Exception $e) {
+                    $exists = false;
+                }
+            }
+            ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+            break;
+        case SQLITE:
+            global $sqlite_db_connection;
+
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+            try {
+                $results = $sqlite_db_connection->query($query);
+                $row = $results->fetchArray();
+                $exists = $row !== false;
+            } catch(Exception $e) {
+                $exists = false;
+            }
+
+            break;
+    }
+
+    if ($exists) {
+        // Feedback for end user
+        echo '<pre>User ID exists in the database.</pre>';
+    } else {
+        // User wasn't found, so the page wasn't!
+        header( $_SERVER[ 'SERVER_PROTOCOL' ] . ' 404 Not Found' );
+
+        // Feedback for end user
+        echo '<pre>User ID is MISSING from the database.</pre>';
+    }
+
+}
+?> 
+```
 
 * Dari kode tersebut, setelah kita menekan tombol `Submit` maka akan mengambil `ID` dari method `GET` lalu akan mengeksekusi query yang menampilkan `first_name` dan `last_name`.
 
@@ -293,27 +344,28 @@ Cara:
    * Kita ingin cek apakah terdapat `User ID: 1` pada database tersebut dengan cara:
      > http://127.0.0.1/DVWA/vulnerabilities/sqli_blind/?id=1' and 1=1 -- -'7&Submit=Submit#  
          Hasilnya:  
-         <img width="459" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5a44ebe2-d7da-4942-9c60-c52f582826a6">  
+         ![Alt text](image-10.png)
 
      > Url tersebut berarti id=1 dapat dicari apabila nilai 1=1
      > Apabila nilai 1=0, maka hasilnya salah. Hal tersebut, dibuktikan dengan:  
-         <img width="460" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c95d6221-bd47-4a31-8740-9e6035bb7c83">
+         ![Alt text](image-11.png)
+
    * Kita ingin mengetahui kata pertama dari data di database itu. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:
 
      > 1' and (select substring(database(), 1, 1))="a" -- -'      
-         <img width="334" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/290a3ccb-db45-48a0-8cf0-6cc6b173879c">    
+ 
          Maka hasilnya:    
-         <img width="467" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7992d310-eb37-4dc4-9214-f9f16244a71a">  
+         ![Alt text](image-12.png) 
 
      > Lalu saat kita ubah jadi huruf lain, dengan:  
          1' and (select substring(database(), 1, 1))="d" -- -'    
-         <img width="338" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f70056ea-4350-4160-917d-394320fba5a0">    
+         ![Alt text](image-14.png)  
          Maka hasilnya:    
-            <img width="336" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/30474fef-ab7b-4701-af26-d5b60f5c308e">  
+            ![Alt text](image-13.png)
          Artinya: kata pertama dari id=1 pada database adalah `d`  
     * Kita ingin mengetahui kata kedua dari data di database. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:   
       > 1' and (select substring(database(), 2, 1))="a" -- -'  
-          <img width="342" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d8e2ea18-daae-4669-89a1-d8f30d9dac22">  
+          ![Alt text](image-15.png) 
       > Kita tebak dari a hingga z, mana huruf yang cocok. Jika cocok, maka huruf tersebut merupakan kata kedua dari User ID tersebut. 
 
 ### Serangan di DVWA dengan security level medium
