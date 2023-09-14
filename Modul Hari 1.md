@@ -591,14 +591,14 @@ Sebagai percobaan, ganti value pada parameter **?page=**, menjadi http://google.
 
 ![RFI1](src/RFI1.png)
 
-![RFI2](image.png)
+![RFI2](src/RFI2.png)
 
 ####  Untuk level Medium
 Sekarang, ganti level ke level medium dengan cara:
 - Masuk ke section DVWA Security
 - Lalu ganti kesulitan menjadi medium dan klik submit
 
-![image](src/RFI2.png)
+![RFI3](src/RFI3.png)
 
 - Kembali ke section File Inclusion
 - Klik **View Source**
