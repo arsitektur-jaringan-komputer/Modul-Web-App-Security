@@ -1,11 +1,11 @@
 ## Daftar Isi Pembahasan Hari Kedua
 
 - [Session Hijacking](#session-hijacking)
-- [Cross Site Scripting](#sql-injection)
-- [Cross Site Request Forgery](#directory-traversal-vulnerabilities)
-- [Man In The Middle](#directory-traversal-vulnerabilities)
-- [Man In The Browser](#directory-traversal-vulnerabilities)
-- [Insecure Direct Object Reference](#file-inclusion-vulnerabilities)
+- [Cross Site Scripting](#cross-site-scripting-xss)
+- [Cross Site Request Forgery](#cross-site-request-forgery)
+- [Man In The Middle](#man-in-the-middle-attack)
+- [Man In The Browser](#man-in-the-browser-attack)
+- [Insecure Direct Object Reference](#insecure-direct-object-reference)
 
 ## Session Hijacking
 
@@ -360,3 +360,32 @@ Berikut adalah beberapa cara yang dapat dilakukan untuk menghindari serangan Mit
 1. Jangan meng-_install_ ekstensi browser yang tidak terverifikasi.
 2. Jangan meng-_install_ DLL, driver, maupun aplikasi yang tidak terverifikasi.
 
+## Insecure Direct Object Reference
+
+Insecure Direct Object Reference (IDOR) merupakan salah satu tipe kerentanan pada _access control_ dengan menggunakan celah aplikasi yang dapat menerima input user untuk memodifikasi objek secara langsung.
+
+_Access kontrol_ meliputi tiga hal berikut:
+
+1. Autentikasi: mengonfirmasi bahwa user sesuai dengan apa yang diakui oleh user
+2. Kontrol Sesi: mengidentifikasi _request_ HTTP mana yang dilakukan oleh user yang sama
+3. Autorisasi: menentukan bahwa user dapat melakukan aksi yang ingin user lakukan atau tidak
+
+Berikut adalah contoh URL dengan kerentanan _control access_:
+
+* https://insecure-website.com/customer_account?customer_number=132355
+* https://insecure-website.com/static/12144.txt
+
+URL tersebut memungkinkan semua user untuk mengakses customer_account maupun _static file_ yang tersedia pada web server.
+
+Tips untuk mencegah serangan IDOR adalah sebagai berikut:
+
+* Manajemen _event_ dan informasi sekuritas
+* Autentikasi dan autorisasi yang terpusat
+* Manajemen patch dan kerentanan
+* Firewall yang terpusat dan deteksi gangguan serta sistem pencegahan
+* Perencanaan respon terhadap insiden
+* Membuat kebijakan tentang keamanan
+* Melakukan pelatihan kesadaran tentang keamanan
+* Backup dan pemulihan dari bencan
+* Pemeriksaan keamanan secara berkala
+* Manajemen resiko dari vendor dan aplikasi pihak ketiga
