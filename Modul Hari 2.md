@@ -28,14 +28,14 @@ Physical access adalah akses fisik atau langsung ke perangkat keras atau tempat 
 
 Session sidejacking adalah serangan yang terjadi ketika seorang penyerang berhasil mencuri atau mengakses cookie otentikasi dari komputer atau perangkat pengguna yang sah. Cookie adalah potongan kecil data yang disimpan pada perangkat pengguna oleh situs web atau aplikasi untuk mengidentifikasi pengguna yang sah selama sesi online mereka. Dengan mengambil cookie ini, penyerang dapat "mengkloning" sesi pengguna yang sah dan mendapatkan akses yang tidak sah ke akun atau layanan online tersebut.
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/2e0e9d02-65e6-4a06-ab7f-96ecc66946c3)
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/c4dafe98-7965-4ff9-bc99-4f25b2bc4de6)
 <br>
 
 ### Session Fixation
 
 Session fixation adalah jenis serangan keamanan yang dilakukan dengan cara memanipulasi atau menetapkan ID sesi (session ID) pengguna pada suatu situs web atau aplikasi sebelum pengguna melakukan login atau sesi awal mereka. Penyerang mencoba memaksa pengguna untuk menggunakan ID sesi yang telah mereka tetapkan, yang memungkinkan penyerang untuk mengendalikan atau memonitor sesi pengguna tersebut. Ini dapat digunakan untuk mendapatkan akses tanpa izin ke akun pengguna atau untuk mencuri data pribadi mereka selama sesi. 
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/b1f54ade-6c7e-43c5-9a74-bc8a458ff767)
+![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/34031bc7-f10e-4194-8886-879a290d1377)
 <br>
 
 ### Pencegahan Session Hijacking
@@ -156,34 +156,34 @@ Penyerangan ini dilakukan dengan DVWA dalam docker. Untuk insialisasinya sebagai
 
 #### Langkah - Langkah Penyerangan
 1. Saat masuk ke dalam `localhost:4280`, tampilan DVWA akan terlihat seperti berikut.
-   ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/442365a1-feea-4676-812e-2e8296ed80ef)
+   ![Screenshot from 2023-09-13 18-41-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/6ed23513-4cbc-4456-be78-fbf1595d404f)
 2. Masukkan username, yaitu `admin` dan passwordnya adalah `password`
 3. Set up database dengan melakukan klik pada `Create/Reset Database`   
-   ![Screenshot from 2023-09-13 18-56-38](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f69d9871-cb9d-411f-89de-9df36bd2c2fe)
+   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/93f07a54-016a-4b67-bd4f-c66de8738ad0)
 4. Setelah itu, pastikan bahwa tingkat kesulitan adalah `Low` dengan cara masuk ke dalam opsi bar `DVWA Security`
-   ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/7bde1b96-54dd-456e-8012-d235b862ddd5)
-6. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
-   ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/d534a702-de6c-4870-872e-bbf38d8b9ba7)
-7. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa
+   ![Screenshot from 2023-09-13 18-42-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/e1466d66-ad6f-4dfd-a45a-66b975a42f67)
+5. Selanjutnya, pergi ke dalam opsi bar `XSS (Reflected)`. Pada percobaan pertama, diketikkan tulisan "test" pada kolom di samping "What's your name?" dan diikuti klik tombol submit. Hasil dari proses tersebut adalah `Hello test`
+   ![Screenshot from 2023-09-13 18-42-45](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/a50a7db3-7093-46d3-8938-48501f9a976e)
+6. Pada percobaam kedua, dilakukan penyerangan pada DVWA dengan melakukan pengetikan berupa
    ```
    <script>alert("XSS Challenge")</script>
    ```
    pada kolom di samping "What's your name?" dan diikuti klik tombol submit, dan terjadi hasil seperti berikut
-   ![Screenshot from 2023-09-13 18-43-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/39cb7a28-efc4-42f2-ba11-45d322414da8)
+   ![Screenshot from 2023-09-13 18-43-11](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/58656d46-1300-4f06-80ee-a0ffed9d8e5f)
 <br>
 <br>
 
 Dari contoh di atas, dapat diketahui serangan XSS kecil yang menampilkan alert window dalam mode low. Untuk selanjutnya merupakan contoh penyerangan dalam mode medium. Langkah - langkah dari penyerangan ini sama seperti pada mode low, namun ada sedikit perbedaan seperti mengubah pengaturan tingkat modenya dari low menjadi medium dan contoh penyerangannya. Berikut merupakan detail dari perbedaan tersebut:
 
 1. Tingkat kesulitan diganti menjadi `medium` pada opsi bar `DVWA Security`
-   ![Screenshot from 2023-09-13 18-43-36](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/f34effbd-0b28-4a18-aa97-c3bee471c5fd)
+   ![Screenshot from 2023-09-13 18-43-36](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/106cee78-cc0b-41f8-a89d-91aab0c752f1)
 2. Lalu pada opsi bar `XSS (Reflected)`, masukkan code untuk penyerangan. Dalam hal ini diketikkan code seperti di bawah ini untuk melakukan penyerangan
    ```
    <img src="x" onerror="alert('XSS Medium')">
    ```
-   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/943120b2-05ca-4cde-a665-d787c2f1fb2c)
+   ![Screenshot from 2023-09-13 18-56-49](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/64e4fe3f-2b8f-4886-84a5-b9380d5c20e0)
 3. Setelah itu, klik tombol `submit` dan akan keluar hasil seperti berikut
-   ![Screenshot from 2023-09-13 18-43-59](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/646840ad-60e1-4c1e-9403-8f653b9aa6fd)
+   ![Screenshot from 2023-09-13 18-43-59](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/110476969/96ccc7a8-bd8b-497d-9a19-30c053805f9a)
 
 ## Cross Site Request Forgery 
 
